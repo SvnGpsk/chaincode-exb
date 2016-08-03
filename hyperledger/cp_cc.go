@@ -23,7 +23,6 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
-	"strconv"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
