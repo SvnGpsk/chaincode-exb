@@ -28,8 +28,8 @@
       <file leaf-file-name="cp_cc.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/hyperledger/cp_cc.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="335">
-              <caret line="78" column="42" selection-start-line="78" selection-start-column="42" selection-end-line="78" selection-end-column="42" />
+            <state relative-caret-position="643">
+              <caret line="92" column="43" selection-start-line="92" selection-start-column="43" selection-end-line="92" selection-end-column="43" />
               <folding>
                 <element signature="e#628#738#0" expanded="true" />
               </folding>
@@ -40,8 +40,18 @@
       <file leaf-file-name="chaincode.go" pinned="false" current-in-tab="false">
         <entry file="file://E:/GOprojects/src/github.com/hyperledger/fabric/core/chaincode/shim/chaincode.go">
           <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="313">
+              <caret line="279" column="53" selection-start-line="279" selection-start-column="53" selection-end-line="279" selection-end-column="53" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="handler.go" pinned="false" current-in-tab="false">
+        <entry file="file://E:/GOprojects/src/github.com/hyperledger/fabric/core/chaincode/shim/handler.go">
+          <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="291">
-              <caret line="278" column="42" selection-start-line="278" selection-start-column="42" selection-end-line="278" selection-end-column="42" />
+              <caret line="477" column="24" selection-start-line="477" selection-start-column="24" selection-end-line="477" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -199,12 +209,12 @@
       <option name="presentableId" value="Default" />
       <updated>1470217342366</updated>
       <workItem from="1470217343507" duration="4045000" />
-      <workItem from="1470229181528" duration="5644000" />
+      <workItem from="1470229181528" duration="5942000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9689000" />
+    <option name="totallyTimeSpent" value="9987000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1911" y="-590" width="1298" height="1042" extended-state="6" />
@@ -255,18 +265,26 @@
       </provider>
     </entry>
     <entry file="file://C:/Go/src/fabric/core/chaincode/shim/chaincode.go" />
-    <entry file="file://E:/GOprojects/src/github.com/hyperledger/fabric/core/chaincode/shim/chaincode.go">
+    <entry file="file://E:/GOprojects/src/github.com/hyperledger/fabric/core/chaincode/shim/handler.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="291">
-          <caret line="278" column="42" selection-start-line="278" selection-start-column="42" selection-end-line="278" selection-end-column="42" />
+          <caret line="477" column="24" selection-start-line="477" selection-start-column="24" selection-end-line="477" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://E:/GOprojects/src/github.com/hyperledger/fabric/core/chaincode/shim/chaincode.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="279" column="53" selection-start-line="279" selection-start-column="53" selection-end-line="279" selection-end-column="53" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/hyperledger/cp_cc.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="78" column="42" selection-start-line="78" selection-start-column="42" selection-end-line="78" selection-end-column="42" />
+        <state relative-caret-position="643">
+          <caret line="92" column="43" selection-start-line="92" selection-start-column="43" selection-end-line="92" selection-end-column="43" />
           <folding>
             <element signature="e#628#738#0" expanded="true" />
           </folding>
