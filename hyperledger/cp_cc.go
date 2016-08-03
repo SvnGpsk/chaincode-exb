@@ -88,9 +88,11 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 		fmt.Println("Error marshalling test")
 		return nil, errors.New("Error marshalling test")
 	}
-
+	var id = ""
+	id= t.GetRandomId()
 	fmt.Println("Put state on string test")
-	err = stub.PutState(t.GetRandomId(), testBytesToWrite)
+	
+	err = stub.PutState(id, testBytesToWrite)
 	if err != nil {
 		fmt.Println("Error writting test back")
 		return nil, errors.New("Error writing the test back")
