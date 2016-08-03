@@ -23,6 +23,7 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
+	"strconv"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
@@ -89,9 +90,9 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 		return nil, errors.New("Error marshalling test")
 	}
 	var id = ""
-	id= t.GetRandomId()
+	id =  strconv.Itoa(t.GetRandomId())
 	fmt.Println("Put state on string test")
-	
+
 	err = stub.PutState(id, testBytesToWrite)
 	if err != nil {
 		fmt.Println("Error writting test back")
