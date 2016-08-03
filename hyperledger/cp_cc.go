@@ -59,6 +59,12 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 	return nil, nil
 }
 
+func (t *SimpleChaincode) GetRandomId() int {
+	var id = 0
+	id = rand.Intn(100)
+	return id
+}
+
 func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
 	if len(args) != 1 {
@@ -76,9 +82,8 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 		return nil, errors.New("Error Unmarshaling Test")
 	}
 	fmt.Println(errors.New("FABIAN"))
-	fmt.Println(errors.New(test))
-	test.Id = t.GetRandomId()
-	fmt.Println(errors.New(test))
+	//test.Id = t.GetRandomId()
+
 	testBytesToWrite, err := json.Marshal(&test)
 	if err != nil {
 		fmt.Println("Error marshalling test")
@@ -93,11 +98,7 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 	}
 	return nil, nil
 }
-func (t *SimpleChaincode) GetRandomId() int {
-	var id = 0
-	id = rand.Intn(100)
-	return id
-}
+
 
 func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	//need one arg
