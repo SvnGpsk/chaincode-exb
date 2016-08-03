@@ -93,7 +93,7 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 }
 func GetRandomId() int {
 	var id = 0
-	id = rand.Intn(999999)
+	id = rand.Intn(100)
 	return id
 }
 
