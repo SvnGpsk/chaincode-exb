@@ -29,7 +29,7 @@
         <entry file="file://$PROJECT_DIR$/hyperledger/cp_cc.go">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="374">
-              <caret line="77" column="42" selection-start-line="77" selection-start-column="42" selection-end-line="77" selection-end-column="42" />
+              <caret line="77" column="32" selection-start-line="77" selection-start-column="32" selection-end-line="77" selection-end-column="32" />
               <folding>
                 <element signature="e#628#738#0" expanded="true" />
               </folding>
@@ -189,12 +189,12 @@
       <option name="presentableId" value="Default" />
       <updated>1470217342366</updated>
       <workItem from="1470217343507" duration="4045000" />
-      <workItem from="1470229181528" duration="3699000" />
+      <workItem from="1470229181528" duration="4177000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7744000" />
+    <option name="totallyTimeSpent" value="8222000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1911" y="-590" width="1298" height="1042" extended-state="6" />
@@ -248,7 +248,7 @@
     <entry file="file://$PROJECT_DIR$/hyperledger/cp_cc.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
-          <caret line="77" column="42" selection-start-line="77" selection-start-column="42" selection-end-line="77" selection-end-column="42" />
+          <caret line="77" column="32" selection-start-line="77" selection-start-column="32" selection-end-line="77" selection-end-column="32" />
           <folding>
             <element signature="e#628#738#0" expanded="true" />
           </folding>

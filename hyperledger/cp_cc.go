@@ -75,9 +75,10 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 		fmt.Println("Error Unmarshaling Test")
 		return nil, errors.New("Error Unmarshaling Test")
 	}
-	fmt.Println(errors.New("FABIAN" + test))
+	fmt.Println(errors.New("FABIAN"))
+	fmt.Println(errors.New(test))
 	test.Id = t.GetRandomId()
-
+	fmt.Println(errors.New(test))
 	testBytesToWrite, err := json.Marshal(&test)
 	if err != nil {
 		fmt.Println("Error marshalling test")
