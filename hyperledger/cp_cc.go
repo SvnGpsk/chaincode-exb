@@ -73,27 +73,12 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 		return nil, errors.New("Incorrect number of arguments. Expecting Test object")
 	}
 
-	var test Test
 	var err error
 
+	str := `{"name": "` + args[0] + `", "id": "` + args[1] + `"}`
 	fmt.Println("Unmarshalling Test")
-	err = json.Unmarshal([]byte(args[0]), &test)
-	if err != nil {
-		fmt.Println("Error Unmarshaling Test")
-		return nil, errors.New("Error Unmarshaling Test")
-	}
-	//test.Id = t.GetRandomId()
 
-	testBytesToWrite, err := json.Marshal(&test)
-	if err != nil {
-		fmt.Println("Error marshalling test")
-		return nil, errors.New("Error marshalling test")
-	}
-	var id = ""
-	id =  strconv.Itoa(t.GetRandomId())
-	fmt.Println("Put state on string test")
-
-	err = stub.PutState(id, testBytesToWrite)
+	err = stub.PutState(args[1], []byte(str))
 	if err != nil {
 		fmt.Println("Error writting test back")
 		return nil, errors.New("Error writing the test back")
