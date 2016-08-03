@@ -22,6 +22,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"math/rand"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
@@ -30,7 +31,8 @@ type SimpleChaincode struct {
 }
 
 type Test struct {
-	Name     string    `json:"name"`
+	Name    string	`json:"name"`
+	Id 	int	`json:"id"`
 }
 
 func GetTest(incomingtest string, stub *shim.ChaincodeStub) (Test, error){
@@ -61,7 +63,7 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 
 	if len(args) != 1 {
 		fmt.Println("error invalid arguments")
-		return nil, errors.New("Incorrect number of arguments. Expecting commercial paper record")
+		return nil, errors.New("Incorrect number of arguments. Expecting Test object")
 	}
 
 	var test Test
@@ -70,14 +72,15 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 	fmt.Println("Unmarshalling Test")
 	err = json.Unmarshal([]byte(args[0]), &test)
 	if err != nil {
-		fmt.Println("error invalid test issue")
-		return nil, errors.New("Invalid test issue")
+		fmt.Println("Error Unmarshaling Test")
+		return nil, errors.New("Error Unmarshaling Test")
 	}
+	&test.Id = GetRandomId()
 
 	testBytesToWrite, err := json.Marshal(&test)
 	if err != nil {
 		fmt.Println("Error marshalling test")
-		return nil, errors.New("Error marshalling the test")
+		return nil, errors.New("Error marshalling test")
 	}
 
 	fmt.Println("Put state on string test")
@@ -87,6 +90,11 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 		return nil, errors.New("Error writing the test back")
 	}
 	return nil, nil
+}
+func GetRandomId() int {
+	var id = 0
+	id = rand.Intn(999999)
+	return id
 }
 
 func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
@@ -136,6 +144,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 	return nil, errors.New("Received unknown function invocation")
 }
 
+//noinspection ALL
 func main() {
 	err := shim.Start(new(SimpleChaincode))
 	if err != nil {
