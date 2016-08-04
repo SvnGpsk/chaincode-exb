@@ -66,11 +66,7 @@ func (t *SimpleChaincode) GetRandomId() int {
 }
 
 func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	if len(args) != 0 {
-		fmt.Println("EXB: error invalid arguments")
-		return nil, errors.New("EXB: Incorrect number of arguments. Expecting Test object")
-	}
-
+	
 	var test Test
 
 	fmt.Println("EXB:", args)
