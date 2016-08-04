@@ -24,7 +24,7 @@ import (
 	"fmt"
 	"math/rand"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
-	"strconv"
+
 )
 
 // SimpleChaincode example simple Chaincode implementation
