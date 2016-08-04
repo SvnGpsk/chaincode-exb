@@ -31,6 +31,10 @@ import (
 type SimpleChaincode struct {
 }
 
+type Tid struct {
+	Tid  string        `json:"tid"`
+}
+
 type Test struct {
 	Name string        `json:"name"`
 	Tid  string        `json:"tid"`
@@ -99,9 +103,12 @@ func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub, args []string) ([]b
 
 	var jsonResp string
 	var err error
+	var tid Tid
+	err = json.Unmarshal([]byte(args[0]), &tid)
 	//var test Test
+
 	fmt.Println(args)
-	testObjAsbytes, err := stub.GetState("1847") //TODO variabel                                                                       //get the var from chaincode state
+	testObjAsbytes, err := stub.GetState(tid.Tid) //TODO variabel                                                                       //get the var from chaincode state
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for id\"}"
 		return nil, errors.New(jsonResp)
