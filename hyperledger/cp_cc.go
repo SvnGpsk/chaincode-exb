@@ -24,8 +24,10 @@ import (
 	"fmt"
 	"math/rand"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
+	"github.com/op/go-logging"
 
 )
+var chaincodeLogger = logging.MustGetLogger("shim")
 
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
@@ -68,7 +70,7 @@ func (t *SimpleChaincode) GetRandomId() int {
 }
 
 func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-
+	chaincodeLogger.Warningf("EXB: ICH BIN BEHINDERT!")
 	if len(args) <= 1 {
 		fmt.Println("EXB: error invalid arguments")
 		return nil, errors.New("EXB: Incorrect number of arguments. Expecting Test object")
