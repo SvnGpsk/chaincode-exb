@@ -63,12 +63,13 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 func (t *SimpleChaincode) GetRandomId() int {
 	var id = 0
 	id = rand.Intn(100)
+	id=10
 	return id
 }
 
 func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
-	if len(args) != 1 {
+	if len(args) != 2 {
 		fmt.Println("error invalid arguments")
 		return nil, errors.New("Incorrect number of arguments. Expecting Test object")
 	}
