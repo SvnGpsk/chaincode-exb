@@ -109,6 +109,7 @@ func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub, args []string) ([]b
 
 	fmt.Println(args)
 	testObjAsbytes, err := stub.GetState(tid.Tid) //TODO variabel                                                                       //get the var from chaincode state
+	fmt.Println("testObjAsbytes=",testObjAsbytes)
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for id\"}"
 		return nil, errors.New(jsonResp)
