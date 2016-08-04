@@ -56,7 +56,7 @@ func GetTest(incomingtest string, stub *shim.ChaincodeStub) (Test, error){
 
 
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
-    	fmt.Println("Initialization complete")
+    	fmt.Println("EXB: Initialization complete")
 	return nil, nil
 }
 
@@ -70,18 +70,18 @@ func (t *SimpleChaincode) GetRandomId() int {
 func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
 	if len(args) <= 1 {
-		fmt.Println("error invalid arguments")
-		return nil, errors.New("Incorrect number of arguments. Expecting Test object")
+		fmt.Println("EXB: error invalid arguments")
+		return nil, errors.New("EXB: Incorrect number of arguments. Expecting Test object")
 	}
 
 	var err error
 	str := `{"name": "` + args[0] + `", "id": "` + args[1] + `"}`
-	fmt.Println("Unmarshalling Test")
+	fmt.Println("EXB: Unmarshalling Test")
 
 	err = stub.PutState(args[1], []byte(str))
 	if err != nil {
-		fmt.Println("Error writting test back")
-		return nil, errors.New("Error writing the test back")
+		fmt.Println("EXB: Error writting test back")
+		return nil, errors.New("EXB: Error writing the test back")
 	}
 	return nil, nil
 }
