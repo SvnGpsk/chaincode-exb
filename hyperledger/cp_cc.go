@@ -24,7 +24,6 @@ import (
 	"fmt"
 	"math/rand"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
-
 )
 
 // SimpleChaincode example simple Chaincode implementation
@@ -32,11 +31,11 @@ type SimpleChaincode struct {
 }
 
 type Test struct {
-	Name    string	`json:"name"`
-	Id 	int	`json:"id"`
+	Name string        `json:"name"`
+	Tid  string        `json:"tid"`
 }
 
-func GetTest(incomingtest string, stub *shim.ChaincodeStub) (Test, error){
+func GetTest(incomingtest string, stub *shim.ChaincodeStub) (Test, error) {
 	var test Test
 
 	testBytes, err := stub.GetState(incomingtest)
@@ -54,31 +53,42 @@ func GetTest(incomingtest string, stub *shim.ChaincodeStub) (Test, error){
 	return test, nil
 }
 
-
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
-    	fmt.Println("EXB: Initialization complete")
+	fmt.Println("EXB: Initialization complete")
 	return nil, nil
 }
 
 func (t *SimpleChaincode) GetRandomId() int {
 	var id = 0
 	id = rand.Intn(100)
-	id=10
+	id = 10
 	return id
 }
 
 func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	//if len(args) <= 1 {
-	//	fmt.Println("EXB: error invalid arguments")
-	//	return nil, errors.New("EXB: Incorrect number of arguments. Expecting Test object")
-	//}
+	if len(args) != 0 {
+		fmt.Println("EXB: error invalid arguments")
+		return nil, errors.New("EXB: Incorrect number of arguments. Expecting Test object")
+	}
+
+	var test Test
+
 	fmt.Println("EXB:", args)
+
 	var err error
-	str := `{"name": "` + args[1] + `", "id": "` + args[0] + `"}`
-	fmt.Println("EXB: Unmarshalling Test")
+	err = json.Unmarshal([]byte(args[0]), &test)
+	if err != nil {
+		fmt.Println("EXB: error unmarshaling test")
+		return nil, errors.New("EXB: error unmarshaling test")
+	}
+	fmt.Println("EXB:", test)
 
 
-	err = stub.PutState(args[0], []byte(str))
+	//str := `{"name": "` + test.Name + `", "id": "` + test.Tid + `"}`
+
+	str, err := json.Marshal(&test)
+	fmt.Println("EXB: ", test.Tid)
+	err = stub.PutState(test.Tid, str)
 	if err != nil {
 		fmt.Println("EXB: Error writing test")
 		return nil, errors.New("EXB: Error writing the test back")
@@ -94,13 +104,13 @@ func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub, args []string) ([]b
 	var err error
 	fmt.Println(args)
 	id = args[0]
-	valAsbytes, err := stub.GetState("6897365")									//get the var from chaincode state
+	valAsbytes, err := stub.GetState("6897365")                                                                        //get the var from chaincode state
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for " + id + "\"}"
 		return nil, errors.New(jsonResp)
 	}
 
-	return valAsbytes, nil													//send it onward
+	return valAsbytes, nil                                                                                                        //send it onward
 }
 
 func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
@@ -108,10 +118,11 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 	fmt.Println("query is running " + function)
 
 	// Handle different functions
-	if function == "read_all" {													//read a variable
+	if function == "read_all" {
+		//read a variable
 		return t.read_all(stub, args)
 	}
-	fmt.Println("query did not find func: " + function)						//error
+	fmt.Println("query did not find func: " + function)                                                //error
 
 	return nil, errors.New("Received unknown function query")
 }
