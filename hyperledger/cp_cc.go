@@ -128,7 +128,7 @@ func (t *SimpleChaincode) Run(stub *shim.ChaincodeStub, function string, args []
 func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
 
-	if function == "write" {
+	if function == "init_product" {
 		fmt.Println("Writing in Blockchain")
 		//Create an asset with some value
 		return t.init_product(stub, args)
