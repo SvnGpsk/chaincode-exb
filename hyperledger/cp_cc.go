@@ -70,7 +70,7 @@ func (t *SimpleChaincode) GetRandomId() int {
 }
 
 func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	chaincodeLogger.Warningf("EXB: ICH BIN BEHINDERT!")
+	chaincodeLogger.Error("EXB: ICH BIN BEHINDERT!")
 	if len(args) <= 1 {
 		fmt.Println("EXB: error invalid arguments")
 		return nil, errors.New("EXB: Incorrect number of arguments. Expecting Test object")
@@ -91,16 +91,12 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 // ============================================================================================================================
 // Read - read a variable from chaincode state
 // ============================================================================================================================
-func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	var id, jsonResp string
 	var err error
 
-	if len(args) < 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting name of the var to query")
-	}
-
 	id = args[0]
-	valAsbytes, err := stub.GetState(id)									//get the var from chaincode state
+	valAsbytes, err := stub.GetState("6897365")									//get the var from chaincode state
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for " + id + "\"}"
 		return nil, errors.New(jsonResp)
@@ -114,8 +110,8 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 	fmt.Println("query is running " + function)
 
 	// Handle different functions
-	if function == "read" {													//read a variable
-		return t.read(stub, args)
+	if function == "read_all" {													//read a variable
+		return t.read_all(stub, args)
 	}
 	fmt.Println("query did not find func: " + function)						//error
 
