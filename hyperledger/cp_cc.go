@@ -75,7 +75,7 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 	}
 
 	var err error
-	var id = strconv.Itoa(t.GetRandomId())
+	var id = args[1]
 	str := `{"name": "` + args[0] + `", "id": "` + id + `"}`
 	fmt.Println("Unmarshalling Test")
 
