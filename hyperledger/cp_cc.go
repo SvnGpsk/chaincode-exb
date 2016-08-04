@@ -95,7 +95,7 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 // ============================================================================================================================
 // Read - read a variable from chaincode state
 // ============================================================================================================================
-func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub, args []string) (Test, error) {
 
 	var jsonResp string
 	var err error
