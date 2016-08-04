@@ -69,17 +69,16 @@ func (t *SimpleChaincode) GetRandomId() int {
 
 func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
-	if len(args) != 2 {
+	if len(args) <= 1 {
 		fmt.Println("error invalid arguments")
 		return nil, errors.New("Incorrect number of arguments. Expecting Test object")
 	}
 
 	var err error
-	var id = args[1]
-	str := `{"name": "` + args[0] + `", "id": "` + id + `"}`
+	str := `{"name": "` + args[0] + `", "id": "` + args[1] + `"}`
 	fmt.Println("Unmarshalling Test")
 
-	err = stub.PutState(id, []byte(str))
+	err = stub.PutState(args[1], []byte(str))
 	if err != nil {
 		fmt.Println("Error writting test back")
 		return nil, errors.New("Error writing the test back")
