@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c9ed4c93-d073-46fc-ac0f-c75b9298c084" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hyperledger/cp_cc.go" afterPath="$PROJECT_DIR$/hyperledger/cp_cc.go" />
-    </list>
+    <list default="true" id="c9ed4c93-d073-46fc-ac0f-c75b9298c084" name="Default" comment="" />
     <ignored path="chaincode-exb.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -28,8 +26,8 @@
       <file leaf-file-name="cp_cc.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/hyperledger/cp_cc.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="387">
-              <caret line="63" column="28" selection-start-line="63" selection-start-column="28" selection-end-line="63" selection-end-column="28" />
+            <state relative-caret-position="123">
+              <caret line="63" column="29" selection-start-line="63" selection-start-column="29" selection-end-line="63" selection-end-column="29" />
               <folding>
                 <element signature="e#628#749#0" expanded="true" />
               </folding>
@@ -328,12 +326,12 @@
       <option name="presentableId" value="Default" />
       <updated>1470217342366</updated>
       <workItem from="1470217343507" duration="4045000" />
-      <workItem from="1470229181528" duration="26170000" />
+      <workItem from="1470229181528" duration="26198000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30215000" />
+    <option name="totallyTimeSpent" value="30243000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1911" y="-590" width="1298" height="1042" extended-state="6" />
@@ -436,8 +434,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/hyperledger/cp_cc.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="387">
-          <caret line="63" column="28" selection-start-line="63" selection-start-column="28" selection-end-line="63" selection-end-column="28" />
+        <state relative-caret-position="123">
+          <caret line="63" column="29" selection-start-line="63" selection-start-column="29" selection-end-line="63" selection-end-column="29" />
           <folding>
             <element signature="e#628#749#0" expanded="true" />
           </folding>
