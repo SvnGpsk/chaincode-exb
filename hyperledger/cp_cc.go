@@ -72,11 +72,11 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 	//	fmt.Println("EXB: error invalid arguments")
 	//	return nil, errors.New("EXB: Incorrect number of arguments. Expecting Test object")
 	//}
-	fmt.Println("EXB:"+args)
+	fmt.Println("EXB:", args)
 	var err error
 	str := `{"name": "` + args[1] + `", "id": "` + args[0] + `"}`
 	fmt.Println("EXB: Unmarshalling Test")
-	fmt.Println(args[0] + " : " + args[1])
+
 
 	err = stub.PutState(args[0], []byte(str))
 	if err != nil {
