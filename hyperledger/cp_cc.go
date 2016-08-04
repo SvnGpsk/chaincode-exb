@@ -67,7 +67,7 @@ func (t *SimpleChaincode) GetRandomId() int {
 	return id
 }
 
-func (t *SimpleChaincode) initProduct(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
 	if len(args) <= 1 {
 		fmt.Println("EXB: error invalid arguments")
