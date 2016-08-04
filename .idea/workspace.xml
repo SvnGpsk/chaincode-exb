@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c9ed4c93-d073-46fc-ac0f-c75b9298c084" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hyperledger/cp_cc.go" afterPath="$PROJECT_DIR$/hyperledger/cp_cc.go" />
     </list>
     <ignored path="chaincode-exb.iws" />
@@ -29,22 +28,10 @@
       <file leaf-file-name="cp_cc.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/hyperledger/cp_cc.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="72" column="30" selection-start-line="72" selection-start-column="30" selection-end-line="72" selection-end-column="30" />
+            <state relative-caret-position="220">
+              <caret line="70" column="45" selection-start-line="70" selection-start-column="45" selection-end-line="70" selection-end-column="45" />
               <folding>
-                <element signature="e#628#767#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="chaincode.go" pinned="false" current-in-tab="false">
-        <entry file="file://E:/GOprojects/src/github.com/hyperledger/fabric/core/chaincode/shim/chaincode.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="520">
-              <caret line="341" column="0" selection-start-line="341" selection-start-column="0" selection-end-line="341" selection-end-column="0" />
-              <folding>
-                <element signature="e#720#1183#0" expanded="true" />
+                <element signature="e#628#739#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -417,12 +404,12 @@
       <option name="presentableId" value="Default" />
       <updated>1470217342366</updated>
       <workItem from="1470217343507" duration="4045000" />
-      <workItem from="1470229181528" duration="20778000" />
+      <workItem from="1470229181528" duration="21196000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24823000" />
+    <option name="totallyTimeSpent" value="25241000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1911" y="-590" width="1298" height="1042" extended-state="6" />
@@ -467,7 +454,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#628#767#0" expanded="true" />
+            <element signature="e#628#739#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -497,16 +484,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://E:/GOprojects/src/github.com/hyperledger/fabric/core/chaincode/shim/chaincode.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
-          <caret line="341" column="0" selection-start-line="341" selection-start-column="0" selection-end-line="341" selection-end-column="0" />
-          <folding>
-            <element signature="e#720#1183#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://E:/GOprojects/pkg/windows_amd64/github.com/hyperledger/fabric/core/chaincode/shim.a">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="191">
@@ -523,12 +500,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://E:/GOprojects/src/github.com/hyperledger/fabric/core/chaincode/shim/chaincode.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6988">
+          <caret line="341" column="0" selection-start-line="341" selection-start-column="0" selection-end-line="341" selection-end-column="0" />
+          <folding>
+            <element signature="e#720#1183#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/hyperledger/cp_cc.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="72" column="30" selection-start-line="72" selection-start-column="30" selection-end-line="72" selection-end-column="30" />
+        <state relative-caret-position="220">
+          <caret line="70" column="45" selection-start-line="70" selection-start-column="45" selection-end-line="70" selection-end-column="45" />
           <folding>
-            <element signature="e#628#767#0" expanded="true" />
+            <element signature="e#628#739#0" expanded="true" />
           </folding>
         </state>
       </provider>
