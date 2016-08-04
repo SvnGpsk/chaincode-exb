@@ -24,6 +24,7 @@ import (
 	"fmt"
 	"math/rand"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
+	"strconv"
 )
 
 // SimpleChaincode example simple Chaincode implementation
@@ -60,13 +61,12 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 
 func (t *SimpleChaincode) GetRandomId() int {
 	var id = 0
-	id = rand.Intn(100)
-	id = 10
+	id = rand.Intn(10000)
 	return id
 }
 
 func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	
+
 	var test Test
 
 	fmt.Println("EXB:", args)
@@ -81,7 +81,7 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 
 
 	//str := `{"name": "` + test.Name + `", "id": "` + test.Tid + `"}`
-
+	test.Tid = strconv.Itoa(t.GetRandomId())
 	str, err := json.Marshal(&test)
 	fmt.Println("EXB: ", test.Tid)
 	err = stub.PutState(test.Tid, str)
