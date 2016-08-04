@@ -68,7 +68,6 @@ func (t *SimpleChaincode) GetRandomId() int {
 }
 
 func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	return nil, errors.New("EXB: ICH BIN BEHINDERT!")
 	if len(args) <= 1 {
 		fmt.Println("EXB: error invalid arguments")
 		return nil, errors.New("EXB: Incorrect number of arguments. Expecting Test object")
@@ -77,6 +76,7 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 	var err error
 	str := `{"name": "` + args[1] + `", "id": "` + args[0] + `"}`
 	fmt.Println("EXB: Unmarshalling Test")
+	fmt.Println(args[0] + " : " + args[1])
 
 	err = stub.PutState(args[0], []byte(str))
 	if err != nil {
@@ -92,7 +92,7 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	var id, jsonResp string
 	var err error
-
+	fmt.Println(args)
 	id = args[0]
 	valAsbytes, err := stub.GetState("6897365")									//get the var from chaincode state
 	if err != nil {
