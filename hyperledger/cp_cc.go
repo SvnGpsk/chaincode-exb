@@ -95,19 +95,19 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 // ============================================================================================================================
 // Read - read a variable from chaincode state
 // ============================================================================================================================
-func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub, args []string) (Test, error) {
+func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
 	var jsonResp string
 	var err error
-	var test Test
+	//var test Test
 	fmt.Println(args)
 	testObjAsbytes, err := stub.GetState("6897365")                                                                        //get the var from chaincode state
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for id\"}"
 		return nil, errors.New(jsonResp)
 	}
-	err = json.Unmarshal(testObjAsbytes, &test);
-	return test, nil                                                                                                        //send it onward
+	//err = json.Unmarshal(testObjAsbytes, &test);
+	return testObjAsbytes, nil                                                                                                        //send it onward
 }
 
 func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
