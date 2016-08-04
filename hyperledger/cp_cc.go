@@ -67,7 +67,7 @@ func (t *SimpleChaincode) GetRandomId() int {
 	return id
 }
 
-func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) initProduct(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
 	if len(args) <= 1 {
 		fmt.Println("EXB: error invalid arguments")
@@ -75,43 +75,49 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 	}
 
 	var err error
-	str := `{"name": "` + args[0] + `", "id": "` + args[1] + `"}`
+	str := `{"name": "` + args[1] + `", "id": "` + args[0] + `"}`
 	fmt.Println("EXB: Unmarshalling Test")
 
-	err = stub.PutState(args[1], []byte(str))
+	err = stub.PutState(args[0], []byte(str))
 	if err != nil {
-		fmt.Println("EXB: Error writting test back")
+		fmt.Println("EXB: Error writing test")
 		return nil, errors.New("EXB: Error writing the test back")
 	}
 	return nil, nil
 }
 
+// ============================================================================================================================
+// Read - read a variable from chaincode state
+// ============================================================================================================================
+func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+	var id, jsonResp string
+	var err error
+
+	if len(args) < 1 {
+		return nil, errors.New("Incorrect number of arguments. Expecting name of the var to query")
+	}
+
+	id = args[0]
+	valAsbytes, err := stub.GetState(id)									//get the var from chaincode state
+	if err != nil {
+		jsonResp = "{\"Error\":\"Failed to get state for " + id + "\"}"
+		return nil, errors.New(jsonResp)
+	}
+
+	return valAsbytes, nil													//send it onward
+}
 
 func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	//need one arg
-	if len(args) < 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting ......")
+	fmt.Println("query is running " + function)
+
+	// Handle different functions
+	if function == "read" {													//read a variable
+		return t.read(stub, args)
 	}
+	fmt.Println("query did not find func: " + function)						//error
 
-	if args[0] == "GetTest" {
-
-		fmt.Println("Getting particular test")
-		test, err := GetTest(args[1], stub)
-		if err != nil {
-			fmt.Println("Error Getting particular test")
-			return nil, err
-		} else {
-			testBytes, err1 := json.Marshal(&test)
-			if err1 != nil {
-				fmt.Println("Error marshalling the test")
-				return nil, err1
-			}
-			fmt.Println("All success, returning the test")
-			return testBytes, nil
-		}
-
-	}
-	return nil, nil
+	return nil, errors.New("Received unknown function query")
 }
 
 func (t *SimpleChaincode) Run(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
@@ -125,7 +131,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 	if function == "write" {
 		fmt.Println("Writing in Blockchain")
 		//Create an asset with some value
-		return t.write(stub, args)
+		return t.initProduct(stub, args)
 	} else if function == "init" {
 		fmt.Println("Firing init")
 		return t.Init(stub, "init", args)
