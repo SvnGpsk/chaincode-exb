@@ -73,8 +73,8 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 	}
 
 	var err error
-
-	str := `{"name": "` + args[0] + `", "id": "` + args[1] + `"}`
+	var id = t.GetRandomId()
+	str := `{"name": "` + args[0] + `", "id": "` + id + `"}`
 	fmt.Println("Unmarshalling Test")
 
 	err = stub.PutState(args[1], []byte(str))
