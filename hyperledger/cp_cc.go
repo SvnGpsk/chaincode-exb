@@ -321,7 +321,7 @@ func (t *SimpleChaincode) read_id(stub *shim.ChaincodeStub, args []string) ([]by
 	//var test Test
 	fmt.Println(productId.ProductId)
 	fmt.Println(args)
-	productAsBytes, err := stub.GetState(productId)                                                                       //get the var from chaincode state
+	productAsBytes, err := stub.GetState(productId.ProductId)                                                                       //get the var from chaincode state
 	fmt.Println("productAsBytes=", productAsBytes)
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for id\"}"
