@@ -307,7 +307,7 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 // ============================================================================================================================
 // Read - read a variable from chaincode state
 // ============================================================================================================================
-func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) read_id(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
 	var jsonResp string
 	var err error
@@ -317,13 +317,13 @@ func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub, args []string) ([]b
 	//var test Test
 
 	fmt.Println(args)
-	testObjAsbytes, err := stub.GetState(queriedId)                                                                       //get the var from chaincode state
-	fmt.Println("testObjAsbytes=", testObjAsbytes)
+	productAsBytes, err := stub.GetState(queriedId)                                                                       //get the var from chaincode state
+	fmt.Println("productAsBytes=", productAsBytes)
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for id\"}"
 		return nil, errors.New(jsonResp)
 	}
-	return testObjAsbytes, nil                                                                                                        //send it onward
+	return productAsBytes, nil                                                                                                        //send it onward
 }
 
 func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
@@ -331,9 +331,9 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 	fmt.Println("query is running " + function)
 
 	// Handle different functions
-	if function == "read_all" {
+	if function == "read_id" {
 		//read a variable
-		return t.read_all(stub, args)
+		return t.read_id(stub, args)
 	}
 	fmt.Println("query did not find func: " + function)                                                //error
 
