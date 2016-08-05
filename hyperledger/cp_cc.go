@@ -67,36 +67,36 @@ type SimpleChaincode struct {
 //==============================================================================================================================
 
 type Product struct {
-	ProductID        string 	`json:pid`
-	CheckID          string 	`json:checksum`
-	Manufacturer     string 	`json:manufacturer`
-	Owner            string 	`json:owner`
-	Current_location string 	`json:current_location`
-	State            int 		`json:state`
-	Width            float32 	`json:width`
-	Height           float32 	`json:height`
-	Weight           float32 	`json:weight`
+	ProductID        int                `json:pid`
+	CheckID          string        `json:checksum`
+	Manufacturer     string        `json:manufacturer`
+	Owner            string        `json:owner`
+	Current_location string        `json:current_location`
+	State            int                `json:state`
+	Width            float32        `json:width`
+	Height           float32        `json:height`
+	Weight           float32        `json:weight`
 	//Contract
 }
 
 type Contract struct {
-	Seller      string 		`json:seller`
-	Buyer       string 		`json:buyer`
-	Buyer_Bank  string 		`json:buyerbank`
-	Seller_Bank string		`json:sellerbank`
-	Price       float32 		`json:price`
-	Currency    string 		`json:currency`
-	Origin      string 		`json:origin`
-	Destination string 		`json:destination`
-	Route       string 		`json:route`
+	Seller      string                `json:seller`
+	Buyer       string                `json:buyer`
+	Buyer_Bank  string                `json:buyerbank`
+	Seller_Bank string                `json:sellerbank`
+	Price       float32                `json:price`
+	Currency    string                `json:currency`
+	Origin      string                `json:origin`
+	Destination string                `json:destination`
+	Route       string                `json:route`
 	//Product
 	//PPP
 }
 
 type PPP struct {
-	State		int 		`json:state`
-	Property_Plan	[]string 	`json:sellerbank`
-	Payment_Plan	[]string 	`json:sellerbank`
+	State         int                `json:state`
+	Property_Plan []string        `json:sellerbank`
+	Payment_Plan  []string        `json:sellerbank`
 }
 
 //==============================================================================================================================
@@ -161,7 +161,13 @@ func (t *SimpleChaincode) createRandomId(stub *shim.ChaincodeStub) (int) {
 //==============================================================================================================================
 func (t *SimpleChaincode) isRandomIdUnused(stub *shim.ChaincodeStub, randomId int) (bool) {
 	usedIds := make([]int, 500)
-	usedIds = t.getAllUsedProductIds(stub)
+	var err error
+	usedIds, err = t.getAllUsedProductIds(stub)
+	if err != nil {
+		fmt.Printf("getAllUsedProductIds failed to return used ids", err)
+		return nil, errors.New("RETRIEVE_V5C: Error retrieving vehicle with pid = ")
+
+	}
 	for _, id := range usedIds {
 		if (id == randomId) {
 			return false
@@ -183,7 +189,8 @@ func (t *SimpleChaincode) getProduct(stub *shim.ChaincodeStub, productId int) (P
 	bytes, err := stub.GetState(strconv.Itoa(productId));
 
 	if err != nil {
-		fmt.Printf("RETRIEVE_PRODUCT: Failed to invoke chaincode: %s", err); return product, errors.New("RETRIEVE_V5C: Error retrieving vehicle with pid = " + productId)
+		fmt.Printf("RETRIEVE_PRODUCT: Failed to invoke chaincode: %s", err);
+		return product, errors.New("RETRIEVE_V5C: Error retrieving vehicle with pid = " + productId)
 	}
 
 	err = json.Unmarshal(bytes, &product);
@@ -224,14 +231,13 @@ func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]int,
 		if err != nil {
 			return nil, errors.New("Failed to retrieve pid")
 		}
-		if (product != "[]") {
+		if (product.ProductID != nil) {
 			usedIds[i] = product.ProductID
 		}
 	}
 
 	return usedIds
 }
-
 
 func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
@@ -247,12 +253,11 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 	}
 	fmt.Println("EXB:", product)
 
-
 	product.ProductID = strconv.Itoa(t.createRandomId(stub))
 	product.State = strconv.Itoa(0)
 	str, err := json.Marshal(&product)
 	fmt.Println("EXB: ", product.ProductID)
-	err = stub.PutState(product.ProductID, str)
+	err = stub.PutState(strconv.Itoa(product.ProductID), str)
 
 	bytes, err := stub.GetState("productIds")
 
@@ -282,7 +287,6 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 		return nil, errors.New("Unable to put the state")
 	}
 
-
 	if err != nil {
 		fmt.Println("EXB: Error writing product")
 		return nil, errors.New("EXB: Error writing the test back")
@@ -304,7 +308,7 @@ func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub, args []string) ([]b
 
 	fmt.Println(args)
 	testObjAsbytes, err := stub.GetState(queriedId)                                                                       //get the var from chaincode state
-	fmt.Println("testObjAsbytes=",testObjAsbytes)
+	fmt.Println("testObjAsbytes=", testObjAsbytes)
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for id\"}"
 		return nil, errors.New(jsonResp)
