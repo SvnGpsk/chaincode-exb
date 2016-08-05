@@ -227,6 +227,7 @@ func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]int,
 	err = json.Unmarshal(bytes, &productIds)
 
 	if err != nil {
+		fmt.Println(err)
 		return nil, errors.New("Invalid JSON for productIdList")
 	}
 	var product Product
