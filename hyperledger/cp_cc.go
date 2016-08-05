@@ -315,7 +315,7 @@ func (t *SimpleChaincode) read_id(stub *shim.ChaincodeStub, args []string) ([]by
 
 	err = json.Unmarshal([]byte(args[0]), &queriedId)
 	//var test Test
-
+	fmt.Println(queriedId)
 	fmt.Println(args)
 	productAsBytes, err := stub.GetState(queriedId)                                                                       //get the var from chaincode state
 	fmt.Println("productAsBytes=", productAsBytes)
