@@ -48,8 +48,8 @@
       <file leaf-file-name="cp_cc.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/hyperledger/cp_cc.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="498">
-              <caret line="233" column="20" selection-start-line="233" selection-start-column="20" selection-end-line="233" selection-end-column="20" />
+            <state relative-caret-position="278">
+              <caret line="256" column="25" selection-start-line="256" selection-start-column="25" selection-end-line="256" selection-end-column="25" />
               <folding>
                 <element signature="e#628#749#0" expanded="true" />
               </folding>
@@ -244,12 +244,12 @@
       <option name="presentableId" value="Default" />
       <updated>1470217342366</updated>
       <workItem from="1470217343507" duration="4045000" />
-      <workItem from="1470229181528" duration="43569000" />
+      <workItem from="1470229181528" duration="44214000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="47614000" />
+    <option name="totallyTimeSpent" value="48259000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1911" y="-590" width="1298" height="1042" extended-state="6" />
@@ -392,8 +392,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/hyperledger/cp_cc.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
-          <caret line="233" column="20" selection-start-line="233" selection-start-column="20" selection-end-line="233" selection-end-column="20" />
+        <state relative-caret-position="278">
+          <caret line="256" column="25" selection-start-line="256" selection-start-column="25" selection-end-line="256" selection-end-column="25" />
           <folding>
             <element signature="e#628#749#0" expanded="true" />
           </folding>
