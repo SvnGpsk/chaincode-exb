@@ -149,7 +149,7 @@ func (t *SimpleChaincode) createRandomId(stub *shim.ChaincodeStub) (int, error) 
 		used, err :=t.isRandomIdUnused(stub, randomId)
 		if err != nil {
 			fmt.Printf("isRandomIdUnused failed %s", err)
-			return nil, errors.New("isRandomIdUnused: Error retrieving vehicle with pid = ")
+			return -1, errors.New("isRandomIdUnused: Error retrieving vehicle with pid = ")
 
 		}
 		if (used) {
