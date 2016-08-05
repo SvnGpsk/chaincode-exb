@@ -140,13 +140,19 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 //
 //==============================================================================================================================
 
-func (t *SimpleChaincode) createRandomId(stub *shim.ChaincodeStub) (int) {
+func (t *SimpleChaincode) createRandomId(stub *shim.ChaincodeStub) (int, error) {
 	var randomId = 0
 	var low = 100000000
 	var high = 999999999
 	for {
 		randomId = rand.Intn(high - low) + low
-		if (t.isRandomIdUnused(stub, randomId)) {
+		used, err :=t.isRandomIdUnused(stub, randomId)
+		if err != nil {
+			fmt.Printf("isRandomIdUnused failed %s", err)
+			return nil, errors.New("isRandomIdUnused: Error retrieving vehicle with pid = ")
+
+		}
+		if (used) {
 			break
 		}
 	}
@@ -165,7 +171,7 @@ func (t *SimpleChaincode) isRandomIdUnused(stub *shim.ChaincodeStub, randomId in
 	usedIds, err = t.getAllUsedProductIds(stub)
 	if err != nil {
 		fmt.Printf("getAllUsedProductIds failed to return used ids", err)
-		return nil, errors.New("RETRIEVE_V5C: Error retrieving vehicle with pid = ")
+		return true, errors.New("getAllUsedProductIds: Error retrieving product with pid = ")
 
 	}
 	for _, id := range usedIds {
@@ -253,7 +259,7 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 	}
 	fmt.Println("EXB:", product)
 
-	product.ProductID = t.createRandomId(stub)
+	product.ProductID, err = t.createRandomId(stub)
 	product.State = 0
 	str, err := json.Marshal(&product)
 	fmt.Println("EXB: ", product.ProductID)
