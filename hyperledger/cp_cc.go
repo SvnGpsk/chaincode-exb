@@ -42,7 +42,7 @@ const PRODUCT = 7
 
 //==============================================================================================================================
 //	 Status types - Asset lifecycle is broken down into 8 statuses, this is part of the business logic to determine what can
-//					be done to the product and its busines parts at points in its lifecycle
+//					be done to the product and its business parts at points in its lifecycle
 //==============================================================================================================================
 const STATE_PRODUCTPASSPORTADDED = 0
 const STATE_CONTRACTADDED = 1
@@ -58,21 +58,14 @@ const STATE_MAINTENANCENEEDED = 7
 type SimpleChaincode struct {
 }
 
-type Tid struct {
-	Tid  string        `json:tid`
-}
 
-type Test struct {
-	Name string        `json:name`
-	Tid  string        `json:tid`
-}
 //==============================================================================================================================
 //	Product 	- Defines the structure for a product passport object.
 //	Contract	- Defines the structure for a sales contract, regarding the Product.
 //	PPP		- Defines the structure for a Payment and Property Plan (PPP) regarding the Contract and the Product. JSON on right tells it what JSON fields to map to
 //			  that element when reading a JSON object into the struct e.g. JSON make -> Struct Make.
 //==============================================================================================================================
-//noinspection GoStructTag
+
 type Product struct {
 	ProductID        string 	`json:pid`
 	CheckID          string 	`json:checksum`
@@ -106,57 +99,192 @@ type PPP struct {
 	Payment_Plan	[]string 	`json:sellerbank`
 }
 
-func GetTest(incomingtest string, stub *shim.ChaincodeStub) (Test, error) {
-	var test Test
+//==============================================================================================================================
+//	ProductID Holder - Defines the structure that holds all the ProductIDs for products that have been created.
+//				Used as an index when querying all products.
+//==============================================================================================================================
+type ProductID_Holder struct {
+	ProductIDs []int `json:"productIds"`
+}
 
-	testBytes, err := stub.GetState(incomingtest)
-	if err != nil {
-		fmt.Println("Error retrieving test " + incomingtest)
-		return test, errors.New("Error retrieving test " + incomingtest)
-	}
-
-	err = json.Unmarshal(testBytes, &test)
-	if err != nil {
-		fmt.Println("Error unmarshalling test " + incomingtest)
-		return test, errors.New("Error unmarshalling test " + incomingtest)
-	}
-
-	return test, nil
+//==============================================================================================================================
+//	ECertResponse - Struct for storing the JSON response of retrieving an ECert. JSON OK -> Struct OK
+//==============================================================================================================================
+type ECertResponse struct {
+	OK    string `json:"OK"`
+	Error string `json:"Error"`
 }
 
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+
+	var ProductIds ProductID_Holder
+
+	bytes, err := json.Marshal(ProductIds)
+
+	if err != nil {
+		return nil, errors.New("Error creating Product_Id_Holder record")
+	}
+
+	err = stub.PutState("productIds", bytes)
+
+	err = stub.PutState("Peer_Address", []byte(args[0]))
+	if err != nil {
+		return nil, errors.New("Error storing peer address")
+	}
+
 	fmt.Println("EXB: Initialization complete")
 	return nil, nil
 }
+//==============================================================================================================================
+// createRandomId - Creates a random id for the product
+//
+//==============================================================================================================================
 
-func (t *SimpleChaincode) GetRandomId() int {
-	var id = 0
-	id = rand.Intn(10000)
-	return id
+func (t *SimpleChaincode) createRandomId(stub *shim.ChaincodeStub) (int) {
+	var randomId = 0
+	var low = 100000000
+	var high = 999999999
+	for {
+		randomId = rand.Intn(high - low) + low
+		if (t.isRandomIdUnused(stub, randomId)) {
+			break
+		}
+	}
+	//TODO in createProduct() die ID zur ID-Liste hinzufügen
+
+	return randomId
 }
+
+//==============================================================================================================================
+// isRandomIdUnused - Checks if the randomly created id is already used by another product.
+//
+//==============================================================================================================================
+func (t *SimpleChaincode) isRandomIdUnused(stub *shim.ChaincodeStub, randomId int) (bool) {
+	usedIds := make([]int, 500)
+	usedIds = t.getAllUsedProductIds(stub)
+	for _, id := range usedIds {
+		if (id == randomId) {
+			return false
+		}
+	}
+
+	return true
+}
+
+//==============================================================================================================================
+//	 getProduct - Gets the state of the data at v5cID in the ledger then converts it from the stored
+//					JSON into the Vehicle struct for use in the contract. Returns the Vehcile struct.
+//					Returns empty v if it errors.
+//==============================================================================================================================
+func (t *SimpleChaincode) getProduct(stub *shim.ChaincodeStub, productId string) (Product, error) {
+
+	var product Product
+
+	bytes, err := stub.GetState(productId);
+
+	if err != nil {
+		fmt.Printf("RETRIEVE_PRODUCT: Failed to invoke chaincode: %s", err); return product, errors.New("RETRIEVE_V5C: Error retrieving vehicle with pid = " + productId)
+	}
+
+	err = json.Unmarshal(bytes, &product);
+
+	if err != nil {
+		fmt.Printf("RETRIEVE_PRODUCT: Corrupt product record " + string(bytes) + ": %s", err); return product, errors.New("RETRIEVE_PRODUCT: Corrupt product record" + string(bytes))
+	}
+
+	return product, nil
+}
+
+//==============================================================================================================================
+// isRandomIdUnused - Checks if the randomly created id is already used by another product. TODO Check comment
+//
+//==============================================================================================================================
+func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) (bool) {
+
+	usedIds := make([]int, 500)
+
+	bytes, err := stub.GetState("productIdList")
+
+	if err != nil {
+		return nil, errors.New("Unable to get productIdList")
+	}
+
+	var productIds ProductID_Holder
+	err = json.Unmarshal(bytes, &productIds)
+
+	if err != nil {
+		return nil, errors.New("Invalid JSON for productIdList")
+	}
+	var product Product
+
+	for i, pid := range productIds.ProductIDs {
+
+		product, err = t.getProduct(stub, pid)
+
+		if err != nil {
+			return nil, errors.New("Failed to retrieve pid")
+		}
+		if (product != nil || product != "[]") {
+			usedIds[i] = product.ProductID
+		}
+	}
+
+	return usedIds
+}
+
 
 func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
-	var test Test
+	var product Product
 
 	fmt.Println("EXB:", args)
 
 	var err error
-	err = json.Unmarshal([]byte(args[0]), &test)
+	err = json.Unmarshal([]byte(args[0]), &product)
 	if err != nil {
 		fmt.Println("EXB: error unmarshaling test")
 		return nil, errors.New("EXB: error unmarshaling test")
 	}
-	fmt.Println("EXB:", test)
+	fmt.Println("EXB:", product)
 
 
-	//str := `{"name": "` + test.Name + `", "id": "` + test.Tid + `"}`
-	test.Tid = strconv.Itoa(t.GetRandomId())
-	str, err := json.Marshal(&test)
-	fmt.Println("EXB: ", test.Tid)
-	err = stub.PutState(test.Tid, str)
+	product.ProductID = strconv.Itoa(t.createRandomId(stub))
+	product.State = strconv.Itoa(0)
+	str, err := json.Marshal(&product)
+	fmt.Println("EXB: ", product.ProductID)
+	err = stub.PutState(product.ProductID, str)
+
+	bytes, err := stub.GetState("productIds")
+
 	if err != nil {
-		fmt.Println("EXB: Error writing test")
+		return nil, errors.New("Unable to get productIds")
+	}
+
+	var productIds ProductID_Holder
+
+	err = json.Unmarshal(bytes, &productIds)
+
+	if err != nil {
+		return nil, errors.New("Corrupt ProductID_Holder record")
+	}
+
+	productIds.ProductIDs = append(productIds.ProductIDs, product.ProductID)
+
+	bytes, err = json.Marshal(productIds)
+
+	if err != nil {
+		fmt.Print("Error creating ProductID_Holder record")
+	}
+
+	err = stub.PutState("productIds", bytes)
+
+	if err != nil {
+		return nil, errors.New("Unable to put the state")
+	}
+
+
+	if err != nil {
+		fmt.Println("EXB: Error writing product")
 		return nil, errors.New("EXB: Error writing the test back")
 	}
 	return nil, nil
@@ -169,19 +297,18 @@ func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub, args []string) ([]b
 
 	var jsonResp string
 	var err error
-	var tid Tid
+	var queriedId string
 
-	err = json.Unmarshal([]byte(args[0]), &tid)
+	err = json.Unmarshal([]byte(args[0]), &queriedId)
 	//var test Test
 
 	fmt.Println(args)
-	testObjAsbytes, err := stub.GetState(tid.Tid)                                                                       //get the var from chaincode state
+	testObjAsbytes, err := stub.GetState(queriedId)                                                                       //get the var from chaincode state
 	fmt.Println("testObjAsbytes=",testObjAsbytes)
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for id\"}"
 		return nil, errors.New(jsonResp)
 	}
-	//err = json.Unmarshal(testObjAsbytes, &test);
 	return testObjAsbytes, nil                                                                                                        //send it onward
 }
 
