@@ -158,7 +158,7 @@ func (t *SimpleChaincode) createRandomId(stub *shim.ChaincodeStub) (int, error) 
 	}
 	//TODO in createProduct() die ID zur ID-Liste hinzufügen
 
-	return randomId
+	return randomId, nil
 }
 
 //==============================================================================================================================
@@ -176,11 +176,11 @@ func (t *SimpleChaincode) isRandomIdUnused(stub *shim.ChaincodeStub, randomId in
 	}
 	for _, id := range usedIds {
 		if (id == randomId) {
-			return false
+			return false, nil
 		}
 	}
 
-	return true
+	return true, nil
 }
 
 //==============================================================================================================================
@@ -242,7 +242,7 @@ func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]int,
 
 	}
 
-	return usedIds
+	return usedIds, nil
 }
 
 func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
