@@ -216,13 +216,14 @@ func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]int,
 
 	usedIds := make([]int, 500)
 
-	bytes, err := stub.GetState("productIdList")
-
+	bytes, err := stub.GetState("productIds")
+	fmt.Println("EXB: Bytes of productIdList contain: ", bytes)
 	if err != nil {
 		return nil, errors.New("Unable to get productIdList")
 	}
 
 	var productIds ProductID_Holder
+
 	err = json.Unmarshal(bytes, &productIds)
 
 	if err != nil {
