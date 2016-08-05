@@ -271,6 +271,8 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 	product.State = 0
 	str, err := json.Marshal(&product)
 	fmt.Println("EXB: ", product.ProductID)
+	fmt.Println("EXB: ", product.Manufacturer)
+
 	err = stub.PutState(strconv.Itoa(product.ProductID), str)
 
 	bytes, err := stub.GetState("productIds")
