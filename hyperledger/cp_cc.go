@@ -27,17 +27,83 @@ import (
 	"strconv"
 )
 
+//==============================================================================================================================
+//	 Participant types - Each participant type is mapped to an integer which we use to compare to the value stored in a
+//						 user's eCert
+//==============================================================================================================================
+const GOVERNMENT = 1
+const SELLER = 2
+const BUYER = 3
+const SELLER_BANK = 4
+const BUYER_BANK = 5
+const SHIPPER = 6
+const PRODUCT = 7
+
+
+//==============================================================================================================================
+//	 Status types - Asset lifecycle is broken down into 8 statuses, this is part of the business logic to determine what can
+//					be done to the product and its busines parts at points in its lifecycle
+//==============================================================================================================================
+const STATE_PRODUCTPASSPORTADDED = 0
+const STATE_CONTRACTADDED = 1
+const STATE_PAYMENTANDPROPERTYPLANADDED = 2
+const STATE_LETTEROFCREDITACCEPTED = 3
+const STATE_PRODUCTPASSPORTCOMPLETE = 4
+const STATE_PRODUCTBEINGSHIPPED = 5
+const STATE_PRODUCTINUSE = 6
+const STATE_MAINTENANCENEEDED = 7
+
+
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
 }
 
 type Tid struct {
-	Tid  string        `json:"tid"`
+	Tid  string        `json:tid`
 }
 
 type Test struct {
-	Name string        `json:"name"`
-	Tid  string        `json:"tid"`
+	Name string        `json:name`
+	Tid  string        `json:tid`
+}
+//==============================================================================================================================
+//	Product 	- Defines the structure for a product passport object.
+//	Contract	- Defines the structure for a sales contract, regarding the Product.
+//	PPP		- Defines the structure for a Payment and Property Plan (PPP) regarding the Contract and the Product. JSON on right tells it what JSON fields to map to
+//			  that element when reading a JSON object into the struct e.g. JSON make -> Struct Make.
+//==============================================================================================================================
+//noinspection GoStructTag
+type Product struct {
+	ProductID        string 	`json:pid`
+	CheckID          string 	`json:checksum`
+	Manufacturer     string 	`json:manufacturer`
+	Owner            string 	`json:owner`
+	Current_location string 	`json:current_location`
+	State            int 		`json:state`
+	Width            float32 	`json:width`
+	Height           float32 	`json:height`
+	Weight           float32 	`json:weight`
+	//Contract
+}
+
+type Contract struct {
+	Seller      string 		`json:seller`
+	Buyer       string 		`json:buyer`
+	Buyer_Bank  string 		`json:buyerbank`
+	Seller_Bank string		`json:sellerbank`
+	Price       float32 		`json:price`
+	Currency    string 		`json:currency`
+	Origin      string 		`json:origin`
+	Destination string 		`json:destination`
+	Route       string 		`json:route`
+	//Product
+	//PPP
+}
+
+type PPP struct {
+	State		int 		`json:state`
+	Property_Plan	[]string 	`json:sellerbank`
+	Payment_Plan	[]string 	`json:sellerbank`
 }
 
 func GetTest(incomingtest string, stub *shim.ChaincodeStub) (Test, error) {
