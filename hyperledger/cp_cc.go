@@ -223,7 +223,7 @@ func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]int,
 	}
 
 	var productIds ProductID_Holder
-	if len(productIds) != 0{
+	if len(bytes) != 0{
 		err = json.Unmarshal(bytes, &productIds)
 
 		if err != nil {
