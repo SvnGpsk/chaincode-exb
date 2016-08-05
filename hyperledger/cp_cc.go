@@ -166,7 +166,7 @@ func (t *SimpleChaincode) createRandomId(stub *shim.ChaincodeStub) (int, error) 
 //
 //==============================================================================================================================
 func (t *SimpleChaincode) isRandomIdUnused(stub *shim.ChaincodeStub, randomId int) (bool, error) {
-	usedIds := make([]int, 500)
+	usedIds := make([]int, 500000000)
 	var err error
 	usedIds, err = t.getAllUsedProductIds(stub)
 	if err != nil {
@@ -214,7 +214,7 @@ func (t *SimpleChaincode) getProduct(stub *shim.ChaincodeStub, productId int) (P
 //==============================================================================================================================
 func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]int, error) {
 
-	usedIds := make([]int, 500)
+	usedIds := make([]int, 500000000)
 
 	bytes, err := stub.GetState("productIds")
 	fmt.Println("EXB: Bytes of productIdList contain: ", bytes)
@@ -223,13 +223,15 @@ func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]int,
 	}
 
 	var productIds ProductID_Holder
+	if len(productIds) != 0{
+		err = json.Unmarshal(bytes, &productIds)
 
-	err = json.Unmarshal(bytes, &productIds)
-
-	if err != nil {
-		fmt.Println(err)
-		return nil, errors.New("Invalid JSON for productIdList")
+		if err != nil {
+			fmt.Println(err)
+			return nil, errors.New("Invalid JSON for productIdList")
+		}
 	}
+
 	var product Product
 
 	for i, pid := range productIds.ProductIDs {
