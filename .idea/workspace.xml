@@ -28,7 +28,7 @@
       <file leaf-file-name="vehicles.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../chaincode-extreme/Chaincode/vehicle_code/vehicles.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="572">
+            <state relative-caret-position="1298">
               <caret line="101" column="14" selection-start-line="101" selection-start-column="14" selection-end-line="101" selection-end-column="14" />
               <folding />
             </state>
@@ -38,8 +38,8 @@
       <file leaf-file-name="vehicles.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../car-lease-demo/Chaincode/vehicle_code/vehicles.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="740">
-              <caret line="292" column="16" selection-start-line="290" selection-start-column="11" selection-end-line="292" selection-end-column="16" />
+            <state relative-caret-position="388">
+              <caret line="57" column="41" selection-start-line="57" selection-start-column="41" selection-end-line="57" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -48,8 +48,8 @@
       <file leaf-file-name="cp_cc.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/hyperledger/cp_cc.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="410">
-              <caret line="323" column="64" selection-start-line="323" selection-start-column="64" selection-end-line="323" selection-end-column="64" />
+            <state relative-caret-position="432">
+              <caret line="324" column="27" selection-start-line="324" selection-start-column="27" selection-end-line="324" selection-end-column="27" />
               <folding>
                 <element signature="e#628#749#0" expanded="true" />
               </folding>
@@ -234,12 +234,12 @@
       <option name="presentableId" value="Default" />
       <updated>1470217342366</updated>
       <workItem from="1470217343507" duration="4045000" />
-      <workItem from="1470229181528" duration="50611000" />
+      <workItem from="1470229181528" duration="51689000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54656000" />
+    <option name="totallyTimeSpent" value="55734000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1911" y="-590" width="1298" height="1042" extended-state="6" />
@@ -346,14 +346,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../chaincode-extreme/Chaincode/vehicle_code/vehicles.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="101" column="14" selection-start-line="101" selection-start-column="14" selection-end-line="101" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Go/src/builtin/builtin.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="291">
@@ -372,16 +364,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../car-lease-demo/Chaincode/vehicle_code/vehicles.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="740">
-          <caret line="292" column="16" selection-start-line="290" selection-start-column="11" selection-end-line="292" selection-end-column="16" />
+        <state relative-caret-position="388">
+          <caret line="57" column="41" selection-start-line="57" selection-start-column="41" selection-end-line="57" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../chaincode-extreme/Chaincode/vehicle_code/vehicles.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1298">
+          <caret line="101" column="14" selection-start-line="101" selection-start-column="14" selection-end-line="101" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/hyperledger/cp_cc.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="410">
-          <caret line="323" column="64" selection-start-line="323" selection-start-column="64" selection-end-line="323" selection-end-column="64" />
+        <state relative-caret-position="432">
+          <caret line="324" column="27" selection-start-line="324" selection-start-column="27" selection-end-line="324" selection-end-column="27" />
           <folding>
             <element signature="e#628#749#0" expanded="true" />
           </folding>

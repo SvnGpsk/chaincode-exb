@@ -100,7 +100,7 @@ type PPP struct {
 }
 
 type ProductId struct {
-	ProductId string `json:pid`
+	Pid 	string	`json:pid`
 }
 
 //==============================================================================================================================
@@ -316,12 +316,12 @@ func (t *SimpleChaincode) read_id(stub *shim.ChaincodeStub, args []string) ([]by
 	var jsonResp string
 	var err error
 	var productId ProductId
-
-	err = json.Unmarshal([]byte(args[0]), &productId)
-	//var test Test
-	fmt.Println(productId.ProductId)
 	fmt.Println(args)
-	productAsBytes, err := stub.GetState(productId.ProductId)                                                                       //get the var from chaincode state
+	err = json.Unmarshal([]byte(args[0]), &productId)
+
+	fmt.Println(productId.Pid)
+
+	productAsBytes, err := stub.GetState(productId.Pid)                                                                       //get the var from chaincode state
 	fmt.Println("productAsBytes=", productAsBytes)
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for id\"}"
