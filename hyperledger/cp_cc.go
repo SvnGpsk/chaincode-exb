@@ -176,11 +176,11 @@ func (t *SimpleChaincode) isRandomIdUnused(stub *shim.ChaincodeStub, randomId in
 //					JSON into the Vehicle struct for use in the contract. Returns the Vehcile struct.
 //					Returns empty v if it errors.
 //==============================================================================================================================
-func (t *SimpleChaincode) getProduct(stub *shim.ChaincodeStub, productId string) (Product, error) {
+func (t *SimpleChaincode) getProduct(stub *shim.ChaincodeStub, productId int) (Product, error) {
 
 	var product Product
 
-	bytes, err := stub.GetState(productId);
+	bytes, err := stub.GetState(strconv.Itoa(productId));
 
 	if err != nil {
 		fmt.Printf("RETRIEVE_PRODUCT: Failed to invoke chaincode: %s", err); return product, errors.New("RETRIEVE_V5C: Error retrieving vehicle with pid = " + productId)
@@ -199,7 +199,7 @@ func (t *SimpleChaincode) getProduct(stub *shim.ChaincodeStub, productId string)
 // isRandomIdUnused - Checks if the randomly created id is already used by another product. TODO Check comment
 //
 //==============================================================================================================================
-func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) (bool) {
+func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]int, error) {
 
 	usedIds := make([]int, 500)
 
@@ -224,7 +224,7 @@ func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) (bool) 
 		if err != nil {
 			return nil, errors.New("Failed to retrieve pid")
 		}
-		if (product != nil || product != "[]") {
+		if (product != "[]") {
 			usedIds[i] = product.ProductID
 		}
 	}
