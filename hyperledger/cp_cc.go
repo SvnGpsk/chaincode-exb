@@ -99,20 +99,24 @@ type PPP struct {
 	Payment_Plan  []string        	`json:sellerbank`
 }
 
+type ProductId struct {
+	ProductId string `json:pid`
+}
+
 //==============================================================================================================================
 //	ProductID Holder - Defines the structure that holds all the ProductIDs for products that have been created.
 //				Used as an index when querying all products.
 //==============================================================================================================================
 type ProductID_Holder struct {
-	ProductIDs []int `json:"productIds"`
+	ProductIDs []int `json:productIds`
 }
 
 //==============================================================================================================================
 //	ECertResponse - Struct for storing the JSON response of retrieving an ECert. JSON OK -> Struct OK
 //==============================================================================================================================
 type ECertResponse struct {
-	OK    string `json:"OK"`
-	Error string `json:"Error"`
+	OK    string `json:OK`
+	Error string `json:Error`
 }
 
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
@@ -311,13 +315,13 @@ func (t *SimpleChaincode) read_id(stub *shim.ChaincodeStub, args []string) ([]by
 
 	var jsonResp string
 	var err error
-	var queriedId string
+	var productId ProductId
 
-	err = json.Unmarshal([]byte(args[0]), &queriedId)
+	err = json.Unmarshal([]byte(args[0]), &productId)
 	//var test Test
-	fmt.Println(queriedId)
+	fmt.Println(productId.ProductId)
 	fmt.Println(args)
-	productAsBytes, err := stub.GetState(queriedId)                                                                       //get the var from chaincode state
+	productAsBytes, err := stub.GetState(productId)                                                                       //get the var from chaincode state
 	fmt.Println("productAsBytes=", productAsBytes)
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for id\"}"
