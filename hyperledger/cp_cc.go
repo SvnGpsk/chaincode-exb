@@ -287,26 +287,17 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 
 	bytes, err := stub.GetState("productIds")
 
-	fmt.Println("productIds nach GetState:", bytes)
-
 	if err != nil {
 		return nil, errors.New("Unable to get productIds")
 	}
-	fmt.Println("ZEILE 295")
 	var productIds ProductID_Holder
-	fmt.Println("ZEILE 297")
 	if len(bytes)>0{
 		err = json.Unmarshal(bytes, &productIds)
 	}
-	fmt.Println("ZEILE 299")
 	if err != nil {
 		return nil, errors.New("Corrupt ProductID_Holder record")
 	}
-	fmt.Println("ZEILE 303")
 	productIds.ProductIDs = append(productIds.ProductIDs, product.ProductID)
-	fmt.Println("ZEILE 305")
-	fmt.Println("NONONONONO:",productIds.ProductIDs)
-	fmt.Println("ZEILE 307")
 	bytes, err = json.Marshal(productIds)
 
 	fmt.Println("json marshal:", bytes)
@@ -346,38 +337,42 @@ func (t *SimpleChaincode) read_id(stub *shim.ChaincodeStub, args []string) ([]by
 	return productAsBytes, nil                                                                                                        //send it onward
 }
 
-// ============================================================================================================================
-// ReadAll - read all products from the list inside chaincode state
-// ============================================================================================================================
-//func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-//
-//	var jsonResp string
-//	var err error
-//	var productIdList ProductID_Holder
-//	fmt.Println(args)
-//	err = json.Unmarshal([]byte(args[0]), &productIdList)
-//
-//	fmt.Println(productId.Pid)
-//
-//	productAsBytes, err := stub.GetState(productId.Pid)                                                                       //get the var from chaincode state
-//	fmt.Println("productAsBytes=", productAsBytes)
-//	if err != nil {
-//		jsonResp = "{\"Error\":\"Failed to get state for id\"}"
-//		return nil, errors.New(jsonResp)
-//	}
-//	return productAsBytes, nil                                                                                                        //send it onward
-//}
+ //============================================================================================================================
+ //ReadAll - read all products from the list inside chaincode state
+ //============================================================================================================================
+func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub) ([]byte, error) {
+
+	//var jsonResp string
+	var err error
+	var productIdList ProductID_Holder
+
+	productListAsBytes, err := stub.GetState("productIds")
+
+	fmt.Println("productListAsBytes=", productListAsBytes)
+
+	//err = json.Unmarshal(productListAsBytes, &productIdList)//get the var from chaincode state
+	//
+	if err != nil {
+		//jsonResp = "{\"Error\":\"Failed to get state for id\"}"
+		//return nil, errors.New(jsonResp)
+	}
+
+	fmt.Println("productList=", productIdList)
+
+	return productListAsBytes, nil                                                                                                        //send it onward
+}
 
 func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	//need one arg
 
-	//TODO Produkt IMMER holen und in read_id mit rein geben!
 	fmt.Println("query is running " + function)
 
 	// Handle different functions
 	if function == "read_id" {
 		//read a variable
 		return t.read_id(stub, args)
+	}else if function == "read_all"{
+		return t.read_all(stub)
 	}
 	fmt.Println("query did not find func: " + function)                                                //error
 
