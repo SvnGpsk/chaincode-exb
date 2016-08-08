@@ -108,7 +108,7 @@ type ProductId struct {
 //				Used as an index when querying all products.
 //==============================================================================================================================
 type ProductID_Holder struct {
-	ProductIDs []int `json:productIds`
+	ProductIDs []string `json:productIds`
 }
 
 //==============================================================================================================================
@@ -132,11 +132,13 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 	err = stub.PutState("productIds", bytes)
 
 	err = stub.PutState("Peer_Address", []byte(args[0]))
+
 	if err != nil {
 		return nil, errors.New("Error storing peer address")
 	}
 
 	fmt.Println("EXB: Initialization complete")
+
 	return nil, nil
 }
 //==============================================================================================================================
@@ -277,7 +279,14 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 
 	err = stub.PutState(strconv.Itoa(product.ProductID), []byte(str))
 
+	if err != nil {
+		fmt.Println("EXB: Error writing product")
+		return nil, errors.New("EXB: Error writing the test back")
+	}
+
 	bytes, err := stub.GetState("productIds")
+
+	fmt.Println("productIds nach GetState:", bytes)
 
 	if err != nil {
 		return nil, errors.New("Unable to get productIds")
@@ -287,28 +296,26 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 
 	err = json.Unmarshal(bytes, &productIds)
 
-	//if err != nil {
-	//	return nil, errors.New("Corrupt ProductID_Holder record")
-	//}
-	//
-	//productIds.ProductIDs = append(productIds.ProductIDs, product.ProductID)
-	//
-	//bytes, err = json.Marshal(productIds)
-	//
-	//if err != nil {
-	//	fmt.Print("Error creating ProductID_Holder record")
-	//}
-	//
-	//err = stub.PutState("productIds", bytes)
-	//
-	//if err != nil {
-	//	return nil, errors.New("Unable to put the state")
-	//}
-	//
-	//if err != nil {
-	//	fmt.Println("EXB: Error writing product")
-	//	return nil, errors.New("EXB: Error writing the test back")
-	//}
+	if err != nil {
+		return nil, errors.New("Corrupt ProductID_Holder record")
+	}
+
+	productIds.ProductIDs = append(productIds.ProductIDs, product.ProductID)
+
+	bytes, err = json.Marshal(productIds)
+
+	fmt.Println("json marshal:", bytes)
+
+	if err != nil {
+		fmt.Print("Error creating ProductID_Holder record")
+	}
+
+	err = stub.PutState("productIds", bytes)
+
+	if err != nil {
+		return nil, errors.New("Unable to put the state")
+	}
+
 	return nil, nil
 }
 
