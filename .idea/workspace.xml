@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c9ed4c93-d073-46fc-ac0f-c75b9298c084" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hyperledger/cp_cc.go" afterPath="$PROJECT_DIR$/hyperledger/cp_cc.go" />
-    </list>
+    <list default="true" id="c9ed4c93-d073-46fc-ac0f-c75b9298c084" name="Default" comment="" />
     <ignored path="chaincode-exb.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -234,12 +232,12 @@
       <option name="presentableId" value="Default" />
       <updated>1470217342366</updated>
       <workItem from="1470217343507" duration="4045000" />
-      <workItem from="1470229181528" duration="63099000" />
+      <workItem from="1470229181528" duration="63347000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="67144000" />
+    <option name="totallyTimeSpent" value="67392000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1911" y="-590" width="1298" height="1042" extended-state="6" />
