@@ -277,16 +277,16 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 
 	err = stub.PutState(strconv.Itoa(product.ProductID), []byte(str))
 
-	//bytes, err := stub.GetState("productIds")
-	//
-	//if err != nil {
-	//	return nil, errors.New("Unable to get productIds")
-	//}
-	//
-	//var productIds ProductID_Holder
-	//
-	//err = json.Unmarshal(bytes, &productIds)
-	//
+	bytes, err := stub.GetState("productIds")
+
+	if err != nil {
+		return nil, errors.New("Unable to get productIds")
+	}
+
+	var productIds ProductID_Holder
+
+	err = json.Unmarshal(bytes, &productIds)
+
 	//if err != nil {
 	//	return nil, errors.New("Corrupt ProductID_Holder record")
 	//}
