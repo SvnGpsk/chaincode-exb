@@ -67,7 +67,7 @@ type SimpleChaincode struct {
 //==============================================================================================================================
 
 type Product struct {
-	ProductID        int          	`json:pid`
+	ProductID        string          	`json:pid`
 	CheckID          string       	`json:checksum`
 	Manufacturer     string       	`json:manufacturer`
 	Owner            string       	`json:owner`
@@ -146,13 +146,13 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 //
 //==============================================================================================================================
 
-func (t *SimpleChaincode) createRandomId(stub *shim.ChaincodeStub) (int, error) {
+func (t *SimpleChaincode) createRandomId(stub *shim.ChaincodeStub) (string, error) {
 	var randomId = 0
 	var low = 100000000
 	var high = 999999999
 	for {
 		randomId = rand.Intn(high - low) + low
-		used, err :=t.isRandomIdUnused(stub, randomId)
+		used, err :=t.isRandomIdUnused(stub, strconv.Itoa(randomId))
 		if err != nil {
 			fmt.Printf("isRandomIdUnused failed %s", err)
 			return -1, errors.New("isRandomIdUnused: Error retrieving vehicle with pid = ")
@@ -164,15 +164,15 @@ func (t *SimpleChaincode) createRandomId(stub *shim.ChaincodeStub) (int, error) 
 	}
 	//TODO in createProduct() die ID zur ID-Liste hinzufügen
 
-	return randomId, nil
+	return strconv.Itoa(randomId), nil
 }
 
 //==============================================================================================================================
 // isRandomIdUnused - Checks if the randomly created id is already used by another product.
 //
 //==============================================================================================================================
-func (t *SimpleChaincode) isRandomIdUnused(stub *shim.ChaincodeStub, randomId int) (bool, error) {
-	usedIds := make([]int, 500000000)
+func (t *SimpleChaincode) isRandomIdUnused(stub *shim.ChaincodeStub, randomId string) (bool, error) {
+	usedIds := make([]string, 500000000)
 	var err error
 	usedIds, err = t.getAllUsedProductIds(stub)
 	if err != nil {
@@ -194,15 +194,15 @@ func (t *SimpleChaincode) isRandomIdUnused(stub *shim.ChaincodeStub, randomId in
 //					JSON into the Vehicle struct for use in the contract. Returns the Vehcile struct.
 //					Returns empty v if it errors.
 //==============================================================================================================================
-func (t *SimpleChaincode) getProduct(stub *shim.ChaincodeStub, productId int) (Product, error) {
+func (t *SimpleChaincode) getProduct(stub *shim.ChaincodeStub, productId string) (Product, error) {
 
 	var product Product
 
-	bytes, err := stub.GetState(strconv.Itoa(productId));
+	bytes, err := stub.GetState(productId);
 
 	if err != nil {
 		fmt.Printf("RETRIEVE_PRODUCT: Failed to invoke chaincode: %s", err);
-		return product, errors.New("getProduct: Error retrieving product with pid = "+strconv.Itoa(productId))
+		return product, errors.New("getProduct: Error retrieving product with pid = "+productId)
 	}
 
 	err = json.Unmarshal(bytes, &product);
@@ -218,9 +218,9 @@ func (t *SimpleChaincode) getProduct(stub *shim.ChaincodeStub, productId int) (P
 // isRandomIdUnused - Checks if the randomly created id is already used by another product. TODO Check comment
 //
 //==============================================================================================================================
-func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]int, error) {
+func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]string, error) {
 
-	usedIds := make([]int, 500000000)
+	usedIds := make([]string, 500000000)
 
 	bytes, err := stub.GetState("productIds")
 	fmt.Println("EXB: Bytes of productIdList contain: ", bytes)
@@ -340,6 +340,28 @@ func (t *SimpleChaincode) read_id(stub *shim.ChaincodeStub, args []string) ([]by
 	}
 	return productAsBytes, nil                                                                                                        //send it onward
 }
+
+// ============================================================================================================================
+// ReadAll - read all products from the list inside chaincode state
+// ============================================================================================================================
+//func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+//
+//	var jsonResp string
+//	var err error
+//	var productIdList ProductID_Holder
+//	fmt.Println(args)
+//	err = json.Unmarshal([]byte(args[0]), &productIdList)
+//
+//	fmt.Println(productId.Pid)
+//
+//	productAsBytes, err := stub.GetState(productId.Pid)                                                                       //get the var from chaincode state
+//	fmt.Println("productAsBytes=", productAsBytes)
+//	if err != nil {
+//		jsonResp = "{\"Error\":\"Failed to get state for id\"}"
+//		return nil, errors.New(jsonResp)
+//	}
+//	return productAsBytes, nil                                                                                                        //send it onward
+//}
 
 func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	//need one arg
