@@ -67,8 +67,8 @@ type SimpleChaincode struct {
 //==============================================================================================================================
 
 type Product struct {
-	ProductID        string          	`json:pid`
-	CheckID          string       	`json:checksum`
+	ProductID        string 	`json:pid`
+	CheckID          string      	`json:checksum`
 	Manufacturer     string       	`json:manufacturer`
 	Owner            string       	`json:owner`
 	Current_location string        	`json:current_location`
@@ -155,7 +155,7 @@ func (t *SimpleChaincode) createRandomId(stub *shim.ChaincodeStub) (string, erro
 		used, err :=t.isRandomIdUnused(stub, strconv.Itoa(randomId))
 		if err != nil {
 			fmt.Printf("isRandomIdUnused failed %s", err)
-			return -1, errors.New("isRandomIdUnused: Error retrieving vehicle with pid = ")
+			return "-1", errors.New("isRandomIdUnused: Error retrieving vehicle with pid = ")
 
 		}
 		if (used) {
@@ -274,10 +274,10 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 	str, err := json.Marshal(&product)
 	fmt.Println("EXB: ", product.ProductID)
 	fmt.Println("DEBUG EXB:", []byte(str))
-	fmt.Println("DEBUG EXB:", strconv.Itoa(product.ProductID))
+	fmt.Println("DEBUG EXB:", product.ProductID)
 	fmt.Println("EXB: ", product.Manufacturer)
 
-	err = stub.PutState(strconv.Itoa(product.ProductID), []byte(str))
+	err = stub.PutState(product.ProductID, []byte(str))
 
 	if err != nil {
 		fmt.Println("EXB: Error writing product")
