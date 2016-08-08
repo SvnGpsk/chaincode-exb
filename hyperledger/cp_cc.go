@@ -208,7 +208,8 @@ func (t *SimpleChaincode) getProduct(stub *shim.ChaincodeStub, productId string)
 	err = json.Unmarshal(bytes, &product);
 
 	if err != nil {
-		fmt.Printf("RETRIEVE_PRODUCT: Corrupt product record " + string(bytes) + ": %s", err); return product, errors.New("RETRIEVE_PRODUCT: Corrupt product record" + string(bytes))
+		fmt.Printf("RETRIEVE_PRODUCT: Corrupt product record " + string(bytes) + ": %s", err);
+		return product, errors.New("RETRIEVE_PRODUCT: Corrupt product record" + string(bytes))
 	}
 
 	return product, nil
@@ -301,6 +302,7 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 	}
 
 	productIds.ProductIDs = append(productIds.ProductIDs, product.ProductID)
+	fmt.Println("NONONONONO:",productIds.ProductIDs)
 
 	bytes, err = json.Marshal(productIds)
 
@@ -386,6 +388,7 @@ func (t *SimpleChaincode) Run(stub *shim.ChaincodeStub, function string, args []
 
 func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
+
 
 	if function == "init_product" {
 		fmt.Println("Writing in Blockchain")
