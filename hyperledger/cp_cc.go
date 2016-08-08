@@ -271,6 +271,8 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 	product.State = 0
 	str, err := json.Marshal(&product)
 	fmt.Println("EXB: ", product.ProductID)
+	fmt.Println("DEBUG EXB:", []byte(str))
+	fmt.Println("DEBUG EXB:", strconv.Itoa(product.ProductID))
 	fmt.Println("EXB: ", product.Manufacturer)
 
 	err = stub.PutState(strconv.Itoa(product.ProductID), []byte(str))
@@ -334,6 +336,8 @@ func (t *SimpleChaincode) read_id(stub *shim.ChaincodeStub, args []string) ([]by
 
 func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	//need one arg
+
+	//TODO Produkt IMMER holen und in read_id mit rein geben!
 	fmt.Println("query is running " + function)
 
 	// Handle different functions
