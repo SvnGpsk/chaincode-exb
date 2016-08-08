@@ -277,38 +277,38 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 
 	err = stub.PutState(strconv.Itoa(product.ProductID), []byte(str))
 
-	bytes, err := stub.GetState("productIds")
-
-	if err != nil {
-		return nil, errors.New("Unable to get productIds")
-	}
-
-	var productIds ProductID_Holder
-
-	err = json.Unmarshal(bytes, &productIds)
-
-	if err != nil {
-		return nil, errors.New("Corrupt ProductID_Holder record")
-	}
-
-	productIds.ProductIDs = append(productIds.ProductIDs, product.ProductID)
-
-	bytes, err = json.Marshal(productIds)
-
-	if err != nil {
-		fmt.Print("Error creating ProductID_Holder record")
-	}
-
-	err = stub.PutState("productIds", bytes)
-
-	if err != nil {
-		return nil, errors.New("Unable to put the state")
-	}
-
-	if err != nil {
-		fmt.Println("EXB: Error writing product")
-		return nil, errors.New("EXB: Error writing the test back")
-	}
+	//bytes, err := stub.GetState("productIds")
+	//
+	//if err != nil {
+	//	return nil, errors.New("Unable to get productIds")
+	//}
+	//
+	//var productIds ProductID_Holder
+	//
+	//err = json.Unmarshal(bytes, &productIds)
+	//
+	//if err != nil {
+	//	return nil, errors.New("Corrupt ProductID_Holder record")
+	//}
+	//
+	//productIds.ProductIDs = append(productIds.ProductIDs, product.ProductID)
+	//
+	//bytes, err = json.Marshal(productIds)
+	//
+	//if err != nil {
+	//	fmt.Print("Error creating ProductID_Holder record")
+	//}
+	//
+	//err = stub.PutState("productIds", bytes)
+	//
+	//if err != nil {
+	//	return nil, errors.New("Unable to put the state")
+	//}
+	//
+	//if err != nil {
+	//	fmt.Println("EXB: Error writing product")
+	//	return nil, errors.New("EXB: Error writing the test back")
+	//}
 	return nil, nil
 }
 
