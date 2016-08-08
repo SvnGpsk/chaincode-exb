@@ -25,8 +25,8 @@
             <file leaf-file-name="vehicles.go" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/../car-lease-demo/Chaincode/vehicle_code/vehicles.go">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="406">
-                    <caret line="75" column="93" selection-start-line="75" selection-start-column="93" selection-end-line="75" selection-end-column="93" />
+                  <state relative-caret-position="1452">
+                    <caret line="79" column="35" selection-start-line="79" selection-start-column="35" selection-end-line="79" selection-end-column="35" />
                     <folding />
                   </state>
                 </provider>
@@ -232,15 +232,15 @@
       <option name="presentableId" value="Default" />
       <updated>1470217342366</updated>
       <workItem from="1470217343507" duration="4045000" />
-      <workItem from="1470229181528" duration="61055000" />
+      <workItem from="1470229181528" duration="61723000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="65100000" />
+    <option name="totallyTimeSpent" value="65768000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1911" y="-590" width="1298" height="1042" extended-state="6" />
+    <frame x="1911" y="-590" width="1298" height="1042" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -368,14 +368,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../car-lease-demo/Chaincode/vehicle_code/vehicles.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="75" column="93" selection-start-line="75" selection-start-column="93" selection-end-line="75" selection-end-column="93" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/hyperledger/cp_cc.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1218">
@@ -383,6 +375,14 @@
           <folding>
             <element signature="e#628#749#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../car-lease-demo/Chaincode/vehicle_code/vehicles.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1452">
+          <caret line="79" column="35" selection-start-line="79" selection-start-column="35" selection-end-line="79" selection-end-column="35" />
+          <folding />
         </state>
       </provider>
     </entry>
