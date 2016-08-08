@@ -292,18 +292,19 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 	if err != nil {
 		return nil, errors.New("Unable to get productIds")
 	}
-
+	fmt.Println("ZEILE 295")
 	var productIds ProductID_Holder
-
+	fmt.Println("ZEILE 297")
 	err = json.Unmarshal(bytes, &productIds)
-
+	fmt.Println("ZEILE 299")
 	if err != nil {
 		return nil, errors.New("Corrupt ProductID_Holder record")
 	}
-
+	fmt.Println("ZEILE 303")
 	productIds.ProductIDs = append(productIds.ProductIDs, product.ProductID)
+	fmt.Println("ZEILE 305")
 	fmt.Println("NONONONONO:",productIds.ProductIDs)
-
+	fmt.Println("ZEILE 307")
 	bytes, err = json.Marshal(productIds)
 
 	fmt.Println("json marshal:", bytes)
