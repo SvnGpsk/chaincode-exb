@@ -295,7 +295,9 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 	fmt.Println("ZEILE 295")
 	var productIds ProductID_Holder
 	fmt.Println("ZEILE 297")
-	err = json.Unmarshal(bytes, &productIds)
+	if len(bytes)>0{
+		err = json.Unmarshal(bytes, &productIds)
+	}
 	fmt.Println("ZEILE 299")
 	if err != nil {
 		return nil, errors.New("Corrupt ProductID_Holder record")
