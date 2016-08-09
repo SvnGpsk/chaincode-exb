@@ -445,39 +445,39 @@ func (t *SimpleChaincode) create_product(stub *shim.ChaincodeStub, args []string
 //=================================================================================================================================
 //	 seller to buyersbank
 //=================================================================================================================================
-func (t *SimpleChaincode) seller_to_buyersbank(stub *shim.ChaincodeStub, product Product, caller User, recipient User) ([]byte, error) {
-
-	//if product.Make == "UNDEFINED" ||
-	//	product.Model == "UNDEFINED" ||
-	//	product.Reg == "UNDEFINED" ||
-	//	product.Colour == "UNDEFINED" ||
-	//	product.VIN == 0 {
-	//	//If any part of the car is undefined it has not bene fully manufactured so cannot be sent
-	//	fmt.Println("MANUFACTURER_TO_PRIVATE: Car not fully defined")
-	//	return nil, errors.New("Car not fully defined")
-	//}
-
-	if product.State == STATE_PAYMENTANDPROPERTYPLANADDED       &&
-		product.Owner == caller.Name                                &&
-		caller.Role == SELLER                        &&
-		recipient.Role == BUYER_BANK{
-
-		product.Owner = recipient.Name
-		product.State = STATE_PRODUCTBEINGSHIPPED
-
-	} else {
-		return nil, errors.New("Permission denied")
-	}
-
-	_, err := t.save_changes(stub, product)
-
-	if err != nil {
-		fmt.Printf("MANUFACTURER_TO_PRIVATE: Error saving changes: %s", err); return nil, errors.New("Error saving changes")
-	}
-
-	return nil, nil
-
-}
+//func (t *SimpleChaincode) seller_to_buyersbank(stub *shim.ChaincodeStub, product Product, caller User, recipient User) ([]byte, error) {
+//
+//	//if product.Make == "UNDEFINED" ||
+//	//	product.Model == "UNDEFINED" ||
+//	//	product.Reg == "UNDEFINED" ||
+//	//	product.Colour == "UNDEFINED" ||
+//	//	product.VIN == 0 {
+//	//	//If any part of the car is undefined it has not bene fully manufactured so cannot be sent
+//	//	fmt.Println("MANUFACTURER_TO_PRIVATE: Car not fully defined")
+//	//	return nil, errors.New("Car not fully defined")
+//	//}
+//
+//	if product.State == STATE_PAYMENTANDPROPERTYPLANADDED       &&
+//		product.Owner == caller.Name                                &&
+//		caller.Role == SELLER                        &&
+//		recipient.Role == BUYER_BANK{
+//
+//		product.Owner = recipient.Name
+//		product.State = STATE_PRODUCTBEINGSHIPPED
+//
+//	} else {
+//		return nil, errors.New("Permission denied")
+//	}
+//
+//	_, err := t.save_changes(stub, product)
+//
+//	if err != nil {
+//		fmt.Printf("MANUFACTURER_TO_PRIVATE: Error saving changes: %s", err); return nil, errors.New("Error saving changes")
+//	}
+//
+//	return nil, nil
+//
+//}
 
 ////=================================================================================================================================
 ////	 private_to_private
