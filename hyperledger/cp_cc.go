@@ -67,20 +67,20 @@ type SimpleChaincode struct {
 //==============================================================================================================================
 
 type Product struct {
-	ProductID        string 	`json:pid`
-	CheckID          string      	`json:checksum`
-	Manufacturer     string       	`json:manufacturer`
-	Owner            string       	`json:owner`
-	Current_location string        	`json:current_location`
-	State            int           	`json:state`
-	Width            float32       	`json:width`
-	Height           float32       	`json:height`
-	Weight           float32 	`json:weight`
+	ProductID        string        `json:pid`
+	CheckID          string        `json:checksum`
+	Manufacturer     string        `json:manufacturer`
+	Owner            string        `json:owner`
+	Current_location string                `json:current_location`
+	State            int                `json:state`
+	Width            float32        `json:width`
+	Height           float32        `json:height`
+	Weight           float32        `json:weight`
 	//Contract
 }
 
 type Contract struct {
-	Seller      string		`json:seller`
+	Seller      string                `json:seller`
 	Buyer       string              `json:buyer`
 	Buyer_Bank  string              `json:buyerbank`
 	Seller_Bank string              `json:sellerbank`
@@ -94,13 +94,13 @@ type Contract struct {
 }
 
 type PPP struct {
-	State         int             	`json:state`
-	Property_Plan []string        	`json:sellerbank`
-	Payment_Plan  []string        	`json:sellerbank`
+	State         int                `json:state`
+	Property_Plan []string                `json:sellerbank`
+	Payment_Plan  []string                `json:sellerbank`
 }
 
 type ProductId struct {
-	Pid 	string	`json:pid`
+	Pid string        `json:pid`
 }
 
 //==============================================================================================================================
@@ -152,7 +152,7 @@ func (t *SimpleChaincode) createRandomId(stub *shim.ChaincodeStub) (string, erro
 	var high = 999999999
 	for {
 		randomId = rand.Intn(high - low) + low
-		used, err :=t.isRandomIdUnused(stub, strconv.Itoa(randomId))
+		used, err := t.isRandomIdUnused(stub, strconv.Itoa(randomId))
 		if err != nil {
 			fmt.Printf("isRandomIdUnused failed %s", err)
 			return "-1", errors.New("isRandomIdUnused: Error retrieving vehicle with pid = ")
@@ -162,7 +162,6 @@ func (t *SimpleChaincode) createRandomId(stub *shim.ChaincodeStub) (string, erro
 			break
 		}
 	}
-	//TODO in createProduct() die ID zur ID-Liste hinzufügen
 
 	return strconv.Itoa(randomId), nil
 }
@@ -176,7 +175,7 @@ func (t *SimpleChaincode) isRandomIdUnused(stub *shim.ChaincodeStub, randomId st
 	var err error
 	usedIds, err = t.getAllUsedProductIds(stub)
 	if err != nil {
-		fmt.Printf("getAllUsedProductIds failed to return used ids", err)
+		fmt.Println("getAllUsedProductIds failed to return used ids", err)
 		return true, errors.New("getAllUsedProductIds: Error retrieving product with pid = ")
 
 	}
@@ -202,7 +201,7 @@ func (t *SimpleChaincode) getProduct(stub *shim.ChaincodeStub, productId string)
 
 	if err != nil {
 		fmt.Printf("RETRIEVE_PRODUCT: Failed to invoke chaincode: %s", err);
-		return product, errors.New("getProduct: Error retrieving product with pid = "+productId)
+		return product, errors.New("getProduct: Error retrieving product with pid = " + productId)
 	}
 
 	err = json.Unmarshal(bytes, &product);
@@ -216,7 +215,7 @@ func (t *SimpleChaincode) getProduct(stub *shim.ChaincodeStub, productId string)
 }
 
 //==============================================================================================================================
-// isRandomIdUnused - Checks if the randomly created id is already used by another product. TODO Check comment
+// getAllUsedProductIds - Returns a list of all product IDs that are already in use
 //
 //==============================================================================================================================
 func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]string, error) {
@@ -230,7 +229,7 @@ func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]stri
 	}
 
 	var productIds ProductID_Holder
-	if len(bytes) != 0{
+	if len(bytes) != 0 {
 		err = json.Unmarshal(bytes, &productIds)
 
 		if err != nil {
@@ -248,9 +247,9 @@ func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]stri
 		if err != nil {
 			return nil, errors.New("Failed to retrieve pid")
 		}
-		//TODO prüfung productID != nil und nicht leer
-		usedIds[i] = product.ProductID
-
+		if (product.ProductID != nil && product.ProductID != "") {
+			usedIds[i] = product.ProductID
+		}
 	}
 
 	return usedIds, nil
@@ -291,7 +290,7 @@ func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) 
 		return nil, errors.New("Unable to get productIds")
 	}
 	var productIds ProductID_Holder
-	if len(bytes)>0{
+	if len(bytes) > 0 {
 		err = json.Unmarshal(bytes, &productIds)
 	}
 	if err != nil {
@@ -337,9 +336,9 @@ func (t *SimpleChaincode) read_id(stub *shim.ChaincodeStub, args []string) ([]by
 	return productAsBytes, nil                                                                                                        //send it onward
 }
 
- //============================================================================================================================
- //ReadAll - read all products from the list inside chaincode state
- //============================================================================================================================
+//============================================================================================================================
+//ReadAll - read all products from the list inside chaincode state
+//============================================================================================================================
 func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub) ([]byte, error) {
 
 	//var jsonResp string
@@ -371,7 +370,7 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 	if function == "read_id" {
 		//read a variable
 		return t.read_id(stub, args)
-	}else if function == "read_all"{
+	} else if function == "read_all" {
 		return t.read_all(stub)
 	}
 	fmt.Println("query did not find func: " + function)                                                //error
@@ -386,7 +385,6 @@ func (t *SimpleChaincode) Run(stub *shim.ChaincodeStub, function string, args []
 
 func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
-
 
 	if function == "init_product" {
 		fmt.Println("Writing in Blockchain")
