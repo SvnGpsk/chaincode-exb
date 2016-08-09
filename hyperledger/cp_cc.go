@@ -55,7 +55,7 @@ type Product struct {
 	ProductID        string        `json:pid`
 	CheckID          string        `json:checksum`
 	Manufacturer     string        `json:manufacturer`
-	Owner            User        `json:owner`
+	Owner            string        `json:owner`
 	Current_location string                `json:current_location`
 	State            int                `json:state`
 	Width            float32        `json:width`
@@ -79,7 +79,7 @@ type Contract struct {
 }
 
 type User struct {
-	Role int        `json:role`
+	Role string        `json:role`
 	Name string        `json:name`
 }
 
