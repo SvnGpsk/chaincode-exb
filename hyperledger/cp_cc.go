@@ -385,12 +385,9 @@ func (t *SimpleChaincode) create_product(stub *shim.ChaincodeStub, args []string
 
 	var product Product
 	var user User
-	fmt.Println("EXB:", args)
 	fmt.Println("EXB:", args[0])
 	var err error
 	err = json.Unmarshal([]byte(args[0]), &user)
-	fmt.Println("EXB USER: ", user)
-	err = json.Unmarshal([]byte(args[0]), &product)
 	if err != nil {
 		fmt.Println("EXB: error unmarshaling product")
 		return nil, errors.New("EXB: error unmarshaling product")
@@ -424,6 +421,7 @@ func (t *SimpleChaincode) create_product(stub *shim.ChaincodeStub, args []string
 	if err != nil {
 		return nil, errors.New("Corrupt ProductID_Holder record")
 	}
+
 	productIds.ProductIDs = append(productIds.ProductIDs, product.ProductID)
 	bytes, err = json.Marshal(productIds)
 
