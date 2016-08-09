@@ -247,7 +247,7 @@ func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]stri
 		if err != nil {
 			return nil, errors.New("Failed to retrieve pid")
 		}
-		if (&product.ProductID != nil && &product.ProductID != "") {
+		if (product.ProductID != "") {
 			usedIds[i] = product.ProductID
 		}
 	}
