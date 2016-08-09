@@ -69,8 +69,8 @@ type SimpleChaincode struct {
 type Product struct {
 	ProductID        string        `json:pid`
 	CheckID          string        `json:checksum`
-	Manufacturer     string        `json:manufacturer`
-	Owner            string        `json:owner`
+	Manufacturer     User        `json:manufacturer`
+	Owner            User        `json:owner`
 	Current_location string                `json:current_location`
 	State            int                `json:state`
 	Width            float32        `json:width`
@@ -80,7 +80,7 @@ type Product struct {
 }
 
 type Contract struct {
-	Seller      string                `json:seller`
+	Seller      string              `json:seller`
 	Buyer       string              `json:buyer`
 	Buyer_Bank  string              `json:buyerbank`
 	Seller_Bank string              `json:sellerbank`
@@ -91,6 +91,11 @@ type Contract struct {
 	Route       string              `json:route`
 	//Product
 	//PPP
+}
+
+type User struct{
+	Role 	int 	`json:role`
+	Name 	string	`json:name`
 }
 
 type PPP struct {
@@ -253,65 +258,6 @@ func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]stri
 	return usedIds, nil
 }
 
-func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-
-	var product Product
-
-	fmt.Println("EXB:", args)
-
-	var err error
-	err = json.Unmarshal([]byte(args[0]), &product)
-	if err != nil {
-		fmt.Println("EXB: error unmarshaling test")
-		return nil, errors.New("EXB: error unmarshaling test")
-	}
-	fmt.Println("EXB:", product)
-
-	product.ProductID, err = t.createRandomId(stub)
-	product.State = 0
-	str, err := json.Marshal(&product)
-	fmt.Println("EXB: ", product.ProductID)
-	fmt.Println("DEBUG EXB:", []byte(str))
-	fmt.Println("DEBUG EXB:", product.ProductID)
-	fmt.Println("EXB: ", product.Manufacturer)
-
-	err = stub.PutState(product.ProductID, []byte(str))
-
-	if err != nil {
-		fmt.Println("EXB: Error writing product")
-		return nil, errors.New("EXB: Error writing the test back")
-	}
-
-	bytes, err := stub.GetState("productIds")
-
-	if err != nil {
-		return nil, errors.New("Unable to get productIds")
-	}
-	var productIds ProductID_Holder
-	if len(bytes) > 0 {
-		err = json.Unmarshal(bytes, &productIds)
-	}
-	if err != nil {
-		return nil, errors.New("Corrupt ProductID_Holder record")
-	}
-	productIds.ProductIDs = append(productIds.ProductIDs, product.ProductID)
-	bytes, err = json.Marshal(productIds)
-
-	fmt.Println("json marshal:", bytes)
-
-	if err != nil {
-		fmt.Print("Error creating ProductID_Holder record")
-	}
-
-	err = stub.PutState("productIds", bytes)
-
-	if err != nil {
-		return nil, errors.New("Unable to put the state")
-	}
-
-	return nil, nil
-}
-
 // ============================================================================================================================
 // Read - read a variable from chaincode state
 // ============================================================================================================================
@@ -392,7 +338,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 		return t.Init(stub, "init", args)
 	}else{
 		fmt.Println(args)
-		product, err := t.getProduct(stub, args[1]) //TODO
+		product, err := t.getProduct(stub, args[1]) //TODO args?
 		if err != nil {
 			fmt.Printf("getProduct: Error getting product: %s", err);
 			return nil, errors.New("Error getting product")
@@ -410,6 +356,65 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 	}
 
 	return nil, errors.New("Received unknown function invocation")
+}
+
+func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+
+	var product Product
+
+	fmt.Println("EXB:", args)
+
+	var err error
+	err = json.Unmarshal([]byte(args[0]), &product)
+	if err != nil {
+		fmt.Println("EXB: error unmarshaling test")
+		return nil, errors.New("EXB: error unmarshaling test")
+	}
+	fmt.Println("EXB:", product)
+
+	product.ProductID, err = t.createRandomId(stub)
+	product.State = 0
+	str, err := json.Marshal(&product)
+	fmt.Println("EXB: ", product.ProductID)
+	fmt.Println("DEBUG EXB:", []byte(str))
+	fmt.Println("DEBUG EXB:", product.ProductID)
+	fmt.Println("EXB: ", product.Manufacturer)
+
+	err = stub.PutState(product.ProductID, []byte(str))
+
+	if err != nil {
+		fmt.Println("EXB: Error writing product")
+		return nil, errors.New("EXB: Error writing the test back")
+	}
+
+	bytes, err := stub.GetState("productIds")
+
+	if err != nil {
+		return nil, errors.New("Unable to get productIds")
+	}
+	var productIds ProductID_Holder
+	if len(bytes) > 0 {
+		err = json.Unmarshal(bytes, &productIds)
+	}
+	if err != nil {
+		return nil, errors.New("Corrupt ProductID_Holder record")
+	}
+	productIds.ProductIDs = append(productIds.ProductIDs, product.ProductID)
+	bytes, err = json.Marshal(productIds)
+
+	fmt.Println("json marshal:", bytes)
+
+	if err != nil {
+		fmt.Print("Error creating ProductID_Holder record")
+	}
+
+	err = stub.PutState("productIds", bytes)
+
+	if err != nil {
+		return nil, errors.New("Unable to put the state")
+	}
+
+	return nil, nil
 }
 
 //=================================================================================================================================
