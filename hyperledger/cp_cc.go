@@ -247,9 +247,7 @@ func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]stri
 		if err != nil {
 			return nil, errors.New("Failed to retrieve pid")
 		}
-		if (product.ProductID != "") {
 			usedIds[i] = product.ProductID
-		}
 	}
 
 	return usedIds, nil
@@ -341,7 +339,7 @@ func (t *SimpleChaincode) read_id(stub *shim.ChaincodeStub, args []string) ([]by
 //============================================================================================================================
 func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub) ([]byte, error) {
 
-	//var jsonResp string
+	var jsonResp string
 	var err error
 	var productIdList ProductID_Holder
 
@@ -349,11 +347,10 @@ func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub) ([]byte, error) {
 
 	fmt.Println("productListAsBytes=", productListAsBytes)
 
-	//err = json.Unmarshal(productListAsBytes, &productIdList)//get the var from chaincode state
-	//
+
 	if err != nil {
-		//jsonResp = "{\"Error\":\"Failed to get state for id\"}"
-		//return nil, errors.New(jsonResp)
+		jsonResp = "{\"Error\":\"Failed to get state for id\"}"
+		return nil, errors.New(jsonResp)
 	}
 
 	fmt.Println("productList=", productIdList)
@@ -389,12 +386,20 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 
 
 	if function == "init_product" {
-		fmt.Println("Writing in Blockchain")
+		fmt.Println("Writing in Product Blockchain")
 		//Create an asset with some value
 		return t.init_product(stub, args)
 	} else if function == "init" {
 		fmt.Println("Firing init")
 		return t.Init(stub, "init", args)
+	}else{
+		if function == "manufacturer_to_buyer"{
+			//return t.manufacturer_to_buyer()
+		} else if function == "manufacturer_to_buyersbank" {
+			//return t.manufacturer_to_buyersbank()
+		} else if function == "buyersbank_to_buyer" {
+			//return t.buyersbank_to_buyer()
+		}
 	}
 
 	return nil, errors.New("Received unknown function invocation")
@@ -413,7 +418,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 //		v.Colour == "UNDEFINED" ||
 //		v.VIN == 0 {
 //		//If any part of the car is undefined it has not bene fully manufacturered so cannot be sent
-//		fmt.Printf("MANUFACTURER_TO_PRIVATE: Car not fully defined")
+//		fmt.Println("MANUFACTURER_TO_PRIVATE: Car not fully defined")
 //		return nil, errors.New("Car not fully defined")
 //	}
 //
