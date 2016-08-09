@@ -383,8 +383,6 @@ func (t *SimpleChaincode) Run(stub *shim.ChaincodeStub, function string, args []
 func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
 
-
-
 	if function == "init_product" {
 		fmt.Println("Writing in Product Blockchain")
 		//Create an asset with some value
@@ -393,7 +391,8 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 		fmt.Println("Firing init")
 		return t.Init(stub, "init", args)
 	}else{
-		product, err := t.getProduct(stub, args[1])
+		fmt.Println(args)
+		product, err := t.getProduct(stub, args[1]) //TODO
 		if err != nil {
 			fmt.Printf("getProduct: Error getting product: %s", err);
 			return nil, errors.New("Error getting product")
@@ -401,6 +400,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 		fmt.Println("GetProduct result: ",product)
 
 		if function == "manufacturer_to_buyer"{
+			return nil, nil
 			//return t.manufacturer_to_buyer(product)
 		} else if function == "manufacturer_to_buyersbank" {
 			//return t.manufacturer_to_buyersbank(product)
