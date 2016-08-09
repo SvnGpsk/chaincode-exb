@@ -23,7 +23,7 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
-	"github.com/hyperledger/fabric/core/chaincode/shim"
+	"fabric/core/chaincode/shim"
 	"strconv"
 )
 
@@ -62,7 +62,10 @@ type SimpleChaincode struct {
 //==============================================================================================================================
 //	Product 	- Defines the structure for a product passport object.
 //	Contract	- Defines the structure for a sales contract, regarding the Product.
-//	PPP		- Defines the structure for a Payment and Property Plan (PPP) regarding the Contract and the Product. JSON on right tells it what JSON fields to map to
+//	User		- Defines a user with his name and affiliation/role.
+//	PPP		- Defines the structure for a Payment and Property Plan (PPP) regarding the Contract and the Product.
+// 	ProductId	- Defines a struct for storing the ProductId
+// 	JSON on right tells it what JSON fields to map to
 //			  that element when reading a JSON object into the struct e.g. JSON make -> Struct Make.
 //==============================================================================================================================
 
@@ -93,9 +96,9 @@ type Contract struct {
 	//PPP
 }
 
-type User struct{
-	Role 	int 	`json:role`
-	Name 	string	`json:name`
+type User struct {
+	Role int        `json:role`
+	Name string        `json:name`
 }
 
 type PPP struct {
@@ -117,13 +120,8 @@ type ProductID_Holder struct {
 }
 
 //==============================================================================================================================
-//	ECertResponse - Struct for storing the JSON response of retrieving an ECert. JSON OK -> Struct OK
+//	Init - Inits the blockchains and the peers.
 //==============================================================================================================================
-type ECertResponse struct {
-	OK    string `json:OK`
-	Error string `json:Error`
-}
-
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
 	var ProductIds ProductID_Holder
@@ -146,8 +144,11 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 
 	return nil, nil
 }
+
 //==============================================================================================================================
-// createRandomId - Creates a random id for the product
+//	 Helping Functions
+//==============================================================================================================================
+// 	 createRandomId - Creates a random id for the product
 //
 //==============================================================================================================================
 
@@ -172,7 +173,7 @@ func (t *SimpleChaincode) createRandomId(stub *shim.ChaincodeStub) (string, erro
 }
 
 //==============================================================================================================================
-// isRandomIdUnused - Checks if the randomly created id is already used by another product.
+// 	isRandomIdUnused - Checks if the randomly created id is already used by another product.
 //
 //==============================================================================================================================
 func (t *SimpleChaincode) isRandomIdUnused(stub *shim.ChaincodeStub, randomId string) (bool, error) {
@@ -220,7 +221,7 @@ func (t *SimpleChaincode) getProduct(stub *shim.ChaincodeStub, productId string)
 }
 
 //==============================================================================================================================
-// getAllUsedProductIds - Returns a list of all product IDs that are already in use
+// 	getAllUsedProductIds - Returns a list of all product IDs that are already in use
 //
 //==============================================================================================================================
 func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]string, error) {
@@ -259,7 +260,7 @@ func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]stri
 }
 
 // ============================================================================================================================
-// Read - read a variable from chaincode state
+// 	Read - read a variable from chaincode state
 // ============================================================================================================================
 func (t *SimpleChaincode) read_id(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
@@ -281,7 +282,7 @@ func (t *SimpleChaincode) read_id(stub *shim.ChaincodeStub, args []string) ([]by
 }
 
 //============================================================================================================================
-//ReadAll - read all products from the list inside chaincode state
+//	 ReadAll - read all products from the list inside chaincode state
 //============================================================================================================================
 func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub) ([]byte, error) {
 
@@ -304,6 +305,34 @@ func (t *SimpleChaincode) read_all(stub *shim.ChaincodeStub) ([]byte, error) {
 	return productListAsBytes, nil                                                                                                        //send it onward
 }
 
+//==============================================================================================================================
+// 	save_changes - Writes to the ledger the Product struct passed in a JSON format. Uses the shim file's
+//				  method 'PutState'.
+//==============================================================================================================================
+func (t *SimpleChaincode) save_changes(stub *shim.ChaincodeStub, product Product) (bool, error) {
+
+	bytes, err := json.Marshal(product)
+
+	if err != nil {
+		fmt.Printf("SAVE_CHANGES: Error converting vehicle record: %s", err); return false, errors.New("Error converting product record")
+	}
+
+	err = stub.PutState(product.ProductID, bytes)
+
+	if err != nil {
+		fmt.Printf("SAVE_CHANGES: Error storing vehicle record: %s", err); return false, errors.New("Error storing product record")
+	}
+
+	return true, nil
+}
+
+//==============================================================================================================================
+//	 Router Functions
+//=================================================================================================================================
+//	Query - Called on chaincode query. Takes a function name passed and calls that function. Passes the
+//  		initial arguments passed are passed on to the called function.
+//=================================================================================================================================
+
 func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	//need one arg
 
@@ -325,6 +354,10 @@ func (t *SimpleChaincode) Run(stub *shim.ChaincodeStub, function string, args []
 	fmt.Println("run is running " + function)
 	return t.Invoke(stub, function, args)
 }
+
+//==============================================================================================================================
+//	Invoke - Called on chaincode invoke. Takes a function name passed and calls that function.
+//==============================================================================================================================
 
 func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
@@ -357,6 +390,10 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 
 	return nil, errors.New("Received unknown function invocation")
 }
+
+//==============================================================================================================================
+//	 init_product - Creates a product in the blockchain with arguments.
+//=================================================================================================================================
 
 func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
