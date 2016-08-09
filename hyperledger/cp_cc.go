@@ -1,21 +1,3 @@
-/*
-Copyright 2016 IBM
-
-Licensed under the Apache License, Version 2.0 (the "License")
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-Licensed Materials - Property of IBM
-© Copyright IBM Corp. 2016
-*/
 package main
 
 import (
@@ -23,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
-	"fabric/core/chaincode/shim"
+	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"strconv"
 )
 
@@ -362,10 +344,10 @@ func (t *SimpleChaincode) Run(stub *shim.ChaincodeStub, function string, args []
 func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
 
-	if function == "init_product" {
+	if function == "create_product" {
 		fmt.Println("Writing in Product Blockchain")
 		//Create an asset with some value
-		return t.init_product(stub, args)
+		return t.create_product(stub, args)
 	} else if function == "init" {
 		fmt.Println("Firing init")
 		return t.Init(stub, "init", args)
@@ -390,12 +372,13 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 
 	return nil, errors.New("Received unknown function invocation")
 }
-
+//=================================================================================================================================
+//	 Create Functions
 //==============================================================================================================================
-//	 init_product - Creates a product in the blockchain with arguments.
+//	 create_product - Creates a product in the blockchain with arguments.
 //=================================================================================================================================
 
-func (t *SimpleChaincode) init_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) create_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
 	var product Product
 
