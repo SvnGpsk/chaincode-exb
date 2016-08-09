@@ -247,9 +247,9 @@ func (t *SimpleChaincode) getAllUsedProductIds(stub *shim.ChaincodeStub) ([]stri
 		if err != nil {
 			return nil, errors.New("Failed to retrieve pid")
 		}
-		if (product.ProductID != nil && product.ProductID != "") {
+		//if (product.ProductID != nil && product.ProductID != "") {
 			usedIds[i] = product.ProductID
-		}
+		//}
 	}
 
 	return usedIds, nil
@@ -386,6 +386,8 @@ func (t *SimpleChaincode) Run(stub *shim.ChaincodeStub, function string, args []
 func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
 
+
+
 	if function == "init_product" {
 		fmt.Println("Writing in Blockchain")
 		//Create an asset with some value
@@ -398,10 +400,104 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 	return nil, errors.New("Received unknown function invocation")
 }
 
-//noinspection ALL
+//=================================================================================================================================
+//	 Transfer Functions
+//=================================================================================================================================
+//	 manufacturer_to_private
+//=================================================================================================================================
+//func (t *SimpleChaincode) manufacturer_to_buyer(stub *shim.ChaincodeStub, v Vehicle, caller string, caller_affiliation int, recipient_name string, recipient_affiliation int) ([]byte, error) {
+//
+//	if v.Make == "UNDEFINED" ||
+//		v.Model == "UNDEFINED" ||
+//		v.Reg == "UNDEFINED" ||
+//		v.Colour == "UNDEFINED" ||
+//		v.VIN == 0 {
+//		//If any part of the car is undefined it has not bene fully manufacturered so cannot be sent
+//		fmt.Printf("MANUFACTURER_TO_PRIVATE: Car not fully defined")
+//		return nil, errors.New("Car not fully defined")
+//	}
+//
+//	if v.Status == STATE_MANUFACTURE        &&
+//		v.Owner == caller                                &&
+//		caller_affiliation == MANUFACTURER                        &&
+//		recipient_affiliation == PRIVATE_ENTITY                &&
+//		v.Scrapped == false {
+//
+//		v.Owner = recipient_name
+//		v.Status = STATE_PRIVATE_OWNERSHIP
+//
+//	} else {
+//		return nil, errors.New("Permission denied")
+//	}
+//
+//	_, err := t.save_changes(stub, v)
+//
+//	if err != nil {
+//		fmt.Printf("MANUFACTURER_TO_PRIVATE: Error saving changes: %s", err); return nil, errors.New("Error saving changes")
+//	}
+//
+//	return nil, nil
+//
+//}
+//
+////=================================================================================================================================
+////	 private_to_private
+////=================================================================================================================================
+//func (t *SimpleChaincode) manufacturer_to_buyersbank(stub *shim.ChaincodeStub, v Vehicle, caller string, caller_affiliation int, recipient_name string, recipient_affiliation int) ([]byte, error) {
+//
+//	if v.Status == STATE_PRIVATE_OWNERSHIP        &&
+//		v.Owner == caller                                        &&
+//		caller_affiliation == PRIVATE_ENTITY                        &&
+//		recipient_affiliation == PRIVATE_ENTITY                        &&
+//		v.Scrapped == false {
+//
+//		v.Owner = recipient_name
+//
+//	} else {
+//
+//		return nil, errors.New("Permission denied")
+//
+//	}
+//
+//	_, err := t.save_changes(stub, v)
+//
+//	if err != nil {
+//		fmt.Printf("PRIVATE_TO_PRIVATE: Error saving changes: %s", err); return nil, errors.New("Error saving changes")
+//	}
+//
+//	return nil, nil
+//
+//}
+//
+////=================================================================================================================================
+////	 private_to_lease_company
+////=================================================================================================================================
+//func (t *SimpleChaincode) buyersbank_to_buyer(stub *shim.ChaincodeStub, v Vehicle, caller string, caller_affiliation int, recipient_name string, recipient_affiliation int) ([]byte, error) {
+//
+//	if v.Status == STATE_PRIVATE_OWNERSHIP        &&
+//		v.Owner == caller                                        &&
+//		caller_affiliation == PRIVATE_ENTITY                        &&
+//		recipient_affiliation == LEASE_COMPANY                        &&
+//		v.Scrapped == false {
+//
+//		v.Owner = recipient_name
+//
+//	} else {
+//		return nil, errors.New("Permission denied")
+//	}
+//
+//	_, err := t.save_changes(stub, v)
+//	if err != nil {
+//		fmt.Printf("PRIVATE_TO_LEASE_COMPANY: Error saving changes: %s", err); return nil, errors.New("Error saving changes")
+//	}
+//
+//	return nil, nil
+//
+//}
+
 func main() {
 	err := shim.Start(new(SimpleChaincode))
 	if err != nil {
-		fmt.Println("Error starting Simple chaincode: %s", err)
+		fmt.Println("Error starting Simple chaincode:", err)
 	}
 }
