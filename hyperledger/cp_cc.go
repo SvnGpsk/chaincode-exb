@@ -54,7 +54,7 @@ type SimpleChaincode struct {
 type Product struct {
 	ProductID        string        `json:pid`
 	CheckID          string        `json:checksum`
-	Manufacturer     User        `json:manufacturer`
+	Manufacturer     string        `json:manufacturer`
 	Owner            User        `json:owner`
 	Current_location string                `json:current_location`
 	State            int                `json:state`
@@ -360,11 +360,14 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 		}
 		fmt.Println("GetProduct result: ",product)
 
-		if function == "manufacturer_to_buyer"{
+		var caller User
+		var recipient User
+
+		if function == "seller_to_buyer"{
 			return nil, nil
-			//return t.manufacturer_to_buyer(product)
-		} else if function == "manufacturer_to_buyersbank" {
-			//return t.manufacturer_to_buyersbank(product)
+			//return t.seller_to_buyer(product)
+		} else if function == "seller_to_buyersbank" {
+			return t.seller_to_buyersbank(stub, product, caller, recipient)
 		} else if function == "buyersbank_to_buyer" {
 			//return t.buyersbank_to_buyer(product)
 		}
@@ -440,47 +443,46 @@ func (t *SimpleChaincode) create_product(stub *shim.ChaincodeStub, args []string
 //=================================================================================================================================
 //	 Transfer Functions
 //=================================================================================================================================
-//	 manufacturer_to_private
+//	 seller to buyersbank
 //=================================================================================================================================
-//func (t *SimpleChaincode) manufacturer_to_buyer(stub *shim.ChaincodeStub, v Vehicle, caller string, caller_affiliation int, recipient_name string, recipient_affiliation int) ([]byte, error) {
-//
-//	if v.Make == "UNDEFINED" ||
-//		v.Model == "UNDEFINED" ||
-//		v.Reg == "UNDEFINED" ||
-//		v.Colour == "UNDEFINED" ||
-//		v.VIN == 0 {
-//		//If any part of the car is undefined it has not bene fully manufacturered so cannot be sent
-//		fmt.Println("MANUFACTURER_TO_PRIVATE: Car not fully defined")
-//		return nil, errors.New("Car not fully defined")
-//	}
-//
-//	if v.Status == STATE_MANUFACTURE        &&
-//		v.Owner == caller                                &&
-//		caller_affiliation == MANUFACTURER                        &&
-//		recipient_affiliation == PRIVATE_ENTITY                &&
-//		v.Scrapped == false {
-//
-//		v.Owner = recipient_name
-//		v.Status = STATE_PRIVATE_OWNERSHIP
-//
-//	} else {
-//		return nil, errors.New("Permission denied")
-//	}
-//
-//	_, err := t.save_changes(stub, v)
-//
-//	if err != nil {
-//		fmt.Printf("MANUFACTURER_TO_PRIVATE: Error saving changes: %s", err); return nil, errors.New("Error saving changes")
-//	}
-//
-//	return nil, nil
-//
-//}
-//
+func (t *SimpleChaincode) seller_to_buyersbank(stub *shim.ChaincodeStub, product Product, caller User, recipient User) ([]byte, error) {
+
+	//if product.Make == "UNDEFINED" ||
+	//	product.Model == "UNDEFINED" ||
+	//	product.Reg == "UNDEFINED" ||
+	//	product.Colour == "UNDEFINED" ||
+	//	product.VIN == 0 {
+	//	//If any part of the car is undefined it has not bene fully manufactured so cannot be sent
+	//	fmt.Println("MANUFACTURER_TO_PRIVATE: Car not fully defined")
+	//	return nil, errors.New("Car not fully defined")
+	//}
+
+	if product.State == STATE_PAYMENTANDPROPERTYPLANADDED       &&
+		product.Owner == caller.Name                                &&
+		caller.Role == SELLER                        &&
+		recipient.Role == BUYER_BANK{
+
+		product.Owner = recipient.Name
+		product.State = STATE_PRODUCTBEINGSHIPPED
+
+	} else {
+		return nil, errors.New("Permission denied")
+	}
+
+	_, err := t.save_changes(stub, product)
+
+	if err != nil {
+		fmt.Printf("MANUFACTURER_TO_PRIVATE: Error saving changes: %s", err); return nil, errors.New("Error saving changes")
+	}
+
+	return nil, nil
+
+}
+
 ////=================================================================================================================================
 ////	 private_to_private
 ////=================================================================================================================================
-//func (t *SimpleChaincode) manufacturer_to_buyersbank(stub *shim.ChaincodeStub, v Vehicle, caller string, caller_affiliation int, recipient_name string, recipient_affiliation int) ([]byte, error) {
+//func (t *SimpleChaincode) seller_to_buyer(stub *shim.ChaincodeStub, v Vehicle, caller string, caller_affiliation int, recipient_name string, recipient_affiliation int) ([]byte, error) {
 //
 //	if v.Status == STATE_PRIVATE_OWNERSHIP        &&
 //		v.Owner == caller                                        &&
