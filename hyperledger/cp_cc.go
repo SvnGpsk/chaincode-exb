@@ -360,14 +360,14 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 		}
 		fmt.Println("GetProduct result: ",product)
 
-		var caller User
-		var recipient User
+		//var caller User
+		//var recipient User
 
 		if function == "seller_to_buyer"{
 			return nil, nil
 			//return t.seller_to_buyer(product)
 		} else if function == "seller_to_buyersbank" {
-			return t.seller_to_buyersbank(stub, product, caller, recipient)
+			//return t.seller_to_buyersbank(stub, product, caller, recipient)
 		} else if function == "buyersbank_to_buyer" {
 			//return t.buyersbank_to_buyer(product)
 		}
