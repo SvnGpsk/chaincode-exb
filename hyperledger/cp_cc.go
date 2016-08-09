@@ -55,7 +55,7 @@ type Product struct {
 	ProductID        string        `json:pid`
 	CheckID          string        `json:checksum`
 	Manufacturer     string        `json:manufacturer`
-	Owner            string        `json:owner`
+	Owner            User        `json:owner`
 	Current_location string                `json:current_location`
 	State            int                `json:state`
 	Width            float32        `json:width`
