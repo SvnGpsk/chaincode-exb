@@ -381,14 +381,16 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 func (t *SimpleChaincode) create_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
 	var product Product
-
+	var user User
 	fmt.Println("EXB:", args)
-
+	fmt.Println("EXB:", args[0])
+	fmt.Println("EXB:", args[1])
 	var err error
+	err = json.Unmarshal([]byte(args[0]), &user)
 	err = json.Unmarshal([]byte(args[0]), &product)
 	if err != nil {
-		fmt.Println("EXB: error unmarshaling test")
-		return nil, errors.New("EXB: error unmarshaling test")
+		fmt.Println("EXB: error unmarshaling product")
+		return nil, errors.New("EXB: error unmarshaling product")
 	}
 	fmt.Println("EXB:", product)
 
