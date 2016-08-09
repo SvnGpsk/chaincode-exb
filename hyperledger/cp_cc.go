@@ -381,7 +381,8 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 //=================================================================================================================================
 
 func (t *SimpleChaincode) create_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-
+	//TODO FUNKTIERT CREATE WIEDER?
+	//TODO QUERIES FIXEN
 	var product Product
 	var user User
 	fmt.Println("EXB:", args[0])
