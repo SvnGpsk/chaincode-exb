@@ -200,7 +200,7 @@ func (t *SimpleChaincode) getProduct(stub *shim.ChaincodeStub, productId string)
 	bytes, err := stub.GetState(productId);
 
 	if err != nil {
-		fmt.Printf("RETRIEVE_PRODUCT: Failed to invoke chaincode: %s", err);
+		fmt.Printf("getProduct: Failed to invoke chaincode: %s", err);
 		return product, errors.New("getProduct: Error retrieving product with pid = " + productId)
 	}
 
@@ -393,12 +393,19 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 		fmt.Println("Firing init")
 		return t.Init(stub, "init", args)
 	}else{
+		product, err := t.getProduct(stub, args[1])
+		if err != nil {
+			fmt.Printf("getProduct: Error getting product: %s", err);
+			return nil, errors.New("Error getting product")
+		}
+		fmt.Println("GetProduct result: ",product)
+
 		if function == "manufacturer_to_buyer"{
-			//return t.manufacturer_to_buyer()
+			//return t.manufacturer_to_buyer(product)
 		} else if function == "manufacturer_to_buyersbank" {
-			//return t.manufacturer_to_buyersbank()
+			//return t.manufacturer_to_buyersbank(product)
 		} else if function == "buyersbank_to_buyer" {
-			//return t.buyersbank_to_buyer()
+			//return t.buyersbank_to_buyer(product)
 		}
 	}
 
