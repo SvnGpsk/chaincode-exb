@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
-	"fabric/core/chaincode/shim"
+	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"strconv"
 )
 
@@ -13,27 +13,27 @@ import (
 //	 Participant types - Each participant type is mapped to an integer which we use to compare to the value stored in a
 //						 user's eCert
 //==============================================================================================================================
-const GOVERNMENT = 1
-const SELLER = 2
-const BUYER = 3
-const SELLER_BANK = 4
-const BUYER_BANK = 5
-const SHIPPER = 6
-const PRODUCT = 7
+const GOVERNMENT = "1"
+const SELLER = "2"
+const BUYER = "3"
+const SELLER_BANK = "4"
+const BUYER_BANK = "5"
+const SHIPPER = "6"
+const PRODUCT = "7"
 
 
 //==============================================================================================================================
 //	 Status types - Asset lifecycle is broken down into 8 statuses, this is part of the business logic to determine what can
 //					be done to the product and its business parts at points in its lifecycle
 //==============================================================================================================================
-const STATE_PRODUCTPASSPORTADDED = 0
-const STATE_CONTRACTADDED = 1
-const STATE_PAYMENTANDPROPERTYPLANADDED = 2
-const STATE_LETTEROFCREDITACCEPTED = 3
-const STATE_PRODUCTPASSPORTCOMPLETE = 4
-const STATE_PRODUCTBEINGSHIPPED = 5
-const STATE_PRODUCTINUSE = 6
-const STATE_MAINTENANCENEEDED = 7
+const STATE_PRODUCTPASSPORTADDED = "0"
+const STATE_CONTRACTADDED = "1"
+const STATE_PAYMENTANDPROPERTYPLANADDED = "2"
+const STATE_LETTEROFCREDITACCEPTED = "3"
+const STATE_PRODUCTPASSPORTCOMPLETE = "4"
+const STATE_PRODUCTBEINGSHIPPED = "5"
+const STATE_PRODUCTINUSE = "6"
+const STATE_MAINTENANCENEEDED = "7"
 
 
 // SimpleChaincode example simple Chaincode implementation
@@ -456,11 +456,11 @@ func (t *SimpleChaincode) seller_to_buyersbank(stub *shim.ChaincodeStub, product
 	//}
 
 	if product.State == STATE_PAYMENTANDPROPERTYPLANADDED       &&
-		product.Owner == caller.Name                                &&
+		product.Owner == caller                                &&
 		caller.Role == SELLER                        &&
 		recipient.Role == BUYER_BANK{
 
-		product.Owner = recipient.Name
+		product.Owner = recipient
 		product.State = STATE_PRODUCTBEINGSHIPPED
 
 	} else {
