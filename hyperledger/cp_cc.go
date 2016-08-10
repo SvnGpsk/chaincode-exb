@@ -381,8 +381,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 //=================================================================================================================================
 
 func (t *SimpleChaincode) create_product(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	//TODO FUNKTIERT CREATE WIEDER?
-	//TODO QUERIES FIXEN
+
 	var product Product
 	var user User
 	fmt.Println("EXB:", args[0])
@@ -396,7 +395,7 @@ func (t *SimpleChaincode) create_product(stub *shim.ChaincodeStub, args []string
 	if user.Role == "2" {
 		fmt.Println("EXB:", product)
 		product.Owner = user;
-		product.Manufacturer = user;
+		product.Manufacturer = user.Name;
 		product.ProductID, err = t.createRandomId(stub)
 		product.State = 0
 		str, err := json.Marshal(&product)
