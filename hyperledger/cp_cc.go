@@ -396,6 +396,7 @@ func (t *SimpleChaincode) create_product(stub *shim.ChaincodeStub, args []string
 	if user.Role == "2" {
 		fmt.Println("EXB:", product)
 		product.Owner = user;
+		product.Manufacturer = user;
 		product.ProductID, err = t.createRandomId(stub)
 		product.State = 0
 		str, err := json.Marshal(&product)
