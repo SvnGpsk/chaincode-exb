@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"strconv"
+	"bytes"
 )
 
 //==============================================================================================================================
@@ -55,13 +56,15 @@ type Product struct {
 	ProductID        string        `json:pid`
 	CheckID          string        `json:checksum`
 	Manufacturer     string        `json:manufacturer`
-	Owner            User        `json:owner`
+	Owner            User        	`json:owner`
 	Current_location string                `json:current_location`
 	State            int                `json:state`
 	Width            float32        `json:width`
 	Height           float32        `json:height`
 	Weight           float32        `json:weight`
+	//state
 	//Contract
+
 }
 
 type Contract struct {
@@ -256,6 +259,8 @@ func (t *SimpleChaincode) read_id(stub *shim.ChaincodeStub, args []string) ([]by
 
 	productAsBytes, err := stub.GetState(productId.Pid)                                                                       //get the var from chaincode state
 	fmt.Println("productAsBytes=", productAsBytes)
+	n := bytes.Index(productAsBytes, []byte{0})
+	fmt.Println("PRODUCT",n)
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for id\"}"
 		return nil, errors.New(jsonResp)
@@ -400,8 +405,9 @@ func (t *SimpleChaincode) create_product(stub *shim.ChaincodeStub, args []string
 		product.State = 0
 		str, err := json.Marshal(&product)
 		fmt.Println("EXB PRODUCT FOR PUT: ", product)
-		err = stub.PutState(product.ProductID, []byte(str))
 		fmt.Println(str)
+		err = stub.PutState(product.ProductID, []byte(str))
+
 		fmt.Println(product.Owner)
 		if err != nil {
 			fmt.Println("EXB: Error writing product")
