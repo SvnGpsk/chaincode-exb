@@ -401,7 +401,8 @@ func (t *SimpleChaincode) create_product(stub *shim.ChaincodeStub, args []string
 		str, err := json.Marshal(&product)
 		fmt.Println("EXB PRODUCT FOR PUT: ", product)
 		err = stub.PutState(product.ProductID, []byte(str))
-
+		fmt.Println(str)
+		fmt.Println(product.Owner)
 		if err != nil {
 			fmt.Println("EXB: Error writing product")
 			return nil, errors.New("EXB: Error writing the test back")
