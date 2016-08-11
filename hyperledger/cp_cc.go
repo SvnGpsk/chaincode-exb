@@ -364,7 +364,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 
 		if function == "seller_to_buyer" {
 			return nil, nil
-			//return t.seller_to_buyer(product)
+			return t.seller_to_buyer(stub, product, caller, recipient)
 		} else if function == "seller_to_buyersbank" {
 			return t.seller_to_buyersbank(stub, product, caller, recipient)
 		} else if function == "buyersbank_to_buyer" {
@@ -478,33 +478,33 @@ func (t *SimpleChaincode) seller_to_buyersbank(stub *shim.ChaincodeStub, product
 }
 
 ////=================================================================================================================================
-////	 private_to_private
+////	 seller to buyer
 ////=================================================================================================================================
-//func (t *SimpleChaincode) seller_to_buyer(stub *shim.ChaincodeStub, v Vehicle, caller string, caller_affiliation int, recipient_name string, recipient_affiliation int) ([]byte, error) {
-//
-//	if v.Status == STATE_PRIVATE_OWNERSHIP        &&
-//		v.Owner == caller                                        &&
-//		caller_affiliation == PRIVATE_ENTITY                        &&
-//		recipient_affiliation == PRIVATE_ENTITY                        &&
-//		v.Scrapped == false {
-//
-//		v.Owner = recipient_name
-//
-//	} else {
-//
-//		return nil, errors.New("Permission denied")
-//
-//	}
-//
-//	_, err := t.save_changes(stub, v)
-//
-//	if err != nil {
-//		fmt.Printf("PRIVATE_TO_PRIVATE: Error saving changes: %s", err); return nil, errors.New("Error saving changes")
-//	}
-//
-//	return nil, nil
-//
-//}
+func (t *SimpleChaincode) seller_to_buyer(stub *shim.ChaincodeStub, product Product, caller User, recipient User) ([]byte, error) {
+
+	if product.State == STATE_PAYMENTANDPROPERTYPLANADDED        &&
+		product.Owner == caller                                       &&
+		caller.Role == SELLER                        &&
+		recipient.Role == BUYER{
+
+		product.Owner = recipient
+		product.State = STATE_PRODUCTBEINGSHIPPED
+
+	} else {
+
+		return nil, errors.New("Permission denied")
+
+	}
+
+	_, err := t.save_changes(stub, product)
+
+	if err != nil {
+		fmt.Printf("SELLER_TO_BUYER: Error saving changes: %s", err); return nil, errors.New("Error saving changes")
+	}
+
+	return nil, nil
+
+}
 
 ////=================================================================================================================================
 ////	 private_to_lease_company
