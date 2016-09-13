@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"math/rand"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"strconv"
 	"bytes"
@@ -134,22 +133,21 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 //	 Helping Functions
 //==============================================================================================================================
 // 	 createRandomId - Creates a random id for the product
-//
+//   On different Peers there will be generated a different ID -> BAD
+//   To avoid this, randomID isn't really random!
 //==============================================================================================================================
 
 func (t *SimpleChaincode) createRandomId(stub *shim.ChaincodeStub) (string, error) {
-	var randomId = 0
-	var low = 100000000
-	var high = 999999999
+	var randomId = 100000000
 	for {
-		randomId = rand.Intn(high - low) + low
-		used, err := t.isRandomIdUnused(stub, strconv.Itoa(randomId))
+		randomId = randomId + 1
+		unused, err := t.isRandomIdUnused(stub, strconv.Itoa(randomId))
 		if err != nil {
 			fmt.Printf("isRandomIdUnused failed %s", err)
 			return "-1", errors.New("isRandomIdUnused: Error retrieving vehicle with pid = ")
 
 		}
-		if (used) {
+		if (unused) {
 			break
 		}
 	}
@@ -159,7 +157,6 @@ func (t *SimpleChaincode) createRandomId(stub *shim.ChaincodeStub) (string, erro
 
 //==============================================================================================================================
 // 	isRandomIdUnused - Checks if the randomly created id is already used by another product.
-//
 //==============================================================================================================================
 func (t *SimpleChaincode) isRandomIdUnused(stub *shim.ChaincodeStub, randomId string) (bool, error) {
 	usedIds := make([]string, 500000000)
@@ -168,7 +165,6 @@ func (t *SimpleChaincode) isRandomIdUnused(stub *shim.ChaincodeStub, randomId st
 	if err != nil {
 		fmt.Println("getAllUsedProductIds failed to return used ids", err)
 		return true, errors.New("getAllUsedProductIds: Error retrieving product with pid = ")
-
 	}
 	for _, id := range usedIds {
 		if (id == randomId) {
