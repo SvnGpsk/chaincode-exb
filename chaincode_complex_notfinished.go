@@ -9,6 +9,9 @@ import (
 	"strconv"
 )
 
+// This is a chaincode that should be working and is more complex than the cp_cc.go file.
+// Unfortunately it is not tested but has modalities that cp_cc.go doesn't have.
+
 //==============================================================================================================================
 //	 Participant types - Each participant type is mapped to an integer which we use to compare to the value stored in a
 //						 user's eCert
@@ -542,11 +545,11 @@ func (t *SimpleChaincode) updateState(stub *shim.ChaincodeStub, contract Contrac
 //=================================================================================================================================
 func (t *SimpleChaincode) updateOwner(stub *shim.ChaincodeStub, product Product, caller User, recipient User) ([]byte, error) {
 
-// if PPP[i] is updateOwner / product.state is right for PPP
+	// if PPP[i] is updateOwner / product.state is right for PPP
 	if product.Owner == caller                                &&
 		caller.Role == SELLER{
-	//&&
-	//	recipient.Role == BUYER_BANK{
+		//&&
+		//	recipient.Role == BUYER_BANK{
 
 		product.Owner = recipient
 		//change PPP state
